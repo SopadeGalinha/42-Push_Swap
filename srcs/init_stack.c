@@ -72,7 +72,7 @@ static void	ft_lstadd_back(t_stack **stack, int content, t_push *st)
 		st->error = true;
 		return ;
 	}
-	st->size++;
+	st->size_of_a++;
 	if (!*stack)
 	{
 		*stack = new;

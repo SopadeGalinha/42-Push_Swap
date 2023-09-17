@@ -37,23 +37,38 @@ typedef struct s_stack
 typedef struct s_push
 {
 	bool			error;
-	unsigned int	size;
+	unsigned int	size_of_a;
 	unsigned int	size_of_b;
 	unsigned int	reference;
 	unsigned int	better;
 	unsigned int	match;
 }	t_push;
 
+enum e_moves
+{
+	SA,
+	SB,
+	SS,
+	RA,
+	RB,
+	RR,
+	RRA,
+	RRB,
+	RRR,
+	PB,
+	PA,
+};
+
 /*__________________________________PROTOTYPES_____________________________*/
 
 // INITIALIZATION
-void			init_stack(t_stack **stack_a, int ac, char **av, t_push *st);
-char			**ft_split(char const *s, char c);
-void			ft_free_split(char **split);
-void			ft_isdigit(char *str, t_push *st);
-void			insert_index(t_stack **stack_a, t_push *st);
-void			ft_clean(t_stack **stack_a, t_stack **stack_b, t_push *st);
+
 t_stack			*ft_lstlast(t_stack *lst);
+void			ft_free_split(char **split);
+char			**ft_split(char const *s, char c);
+void			insert_index(t_stack **stack_a, t_push *st);
+void			ft_isdigit(char *str, t_push *st);
+void			init_stack(t_stack **stack_a, int ac, char **av, t_push *st);
 
 // UTILS
 unsigned int	ft_smallest(t_stack *list);
@@ -64,10 +79,10 @@ unsigned int	lst_distance(t_stack *stack_a, unsigned int index);
 void			ft_printlist(t_stack *stack_a, t_stack *stack_b, t_push *st);
 
 // OPERATIONS
-void			push(t_stack **stack_a, t_stack **stack_b, char mv, t_push *st);
-void			swap(t_stack **stack_a, t_stack **stack_b, char move);
-void			rotate(t_stack **stack_a, t_stack **stack_b, char move);
-void			reverse_rotate(t_stack **stack_a, t_stack **stack_b, char move);
+void			push(t_stack **stack_a, t_stack **stack_b, int mv, t_push *st);
+void			swap(t_stack **stack_a, t_stack **stack_b, int move);
+void			rotate(t_stack **stack_a, t_stack **stack_b, int move);
+void			reverse_rotate(t_stack **stack_a, t_stack **stack_b, int move);
 
 // ALGORITHM
 void			sort_over_five(t_stack **stacka, t_stack **stackb, t_push *st);

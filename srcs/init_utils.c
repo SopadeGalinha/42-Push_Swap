@@ -12,26 +12,6 @@
 
 #include "push_swap.h"
 
-void	ft_clean(t_stack **stack_a, t_stack **stack_b, t_push *st)
-{
-	t_stack	*tmp;
-
-	while (*stack_a)
-	{
-		tmp = *stack_a;
-		*stack_a = (*stack_a)->next;
-		free(tmp);
-	}
-	while (*stack_b)
-	{
-		tmp = *stack_b;
-		*stack_b = (*stack_b)->next;
-		free(tmp);
-	}
-	if (st->error == true)
-		write(2, "Error\n", 6);
-}
-
 void	insert_index(t_stack **stack_a, t_push *st)
 {
 	unsigned int	i;

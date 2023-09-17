@@ -19,21 +19,21 @@
 static void	rotate_operation(t_stack **stack);
 static void	reverse_rotate_operation(t_stack **stack);
 
-void	rotate(t_stack **stack_a, t_stack **stack_b, char move)
+void	rotate(t_stack **stack_a, t_stack **stack_b, int move)
 {
-	if (!(move == '1' || move == '2' || move == '3'))
+	if (!(move == RA || move == RB || move == RR))
 		write(1, "Rotate: fix your code\n", 22);
 	if (stack_a == NULL && stack_b == NULL)
 		return ;
-	if (move == '1' || move == '3')
+	if (move == RA || move == RR)
 		rotate_operation(stack_a);
-	if (move == '2' || move == '3')
+	if (move == RB || move == RR)
 		rotate_operation(stack_b);
-	if (move == '1')
+	if (move == RA)
 		write(1, "ra\n", 3);
-	if (move == '2')
+	if (move == RB)
 		write(1, "rb\n", 3);
-	if (move == '3')
+	if (move == RR)
 		write(1, "rr\n", 3);
 }
 
@@ -55,21 +55,21 @@ static void	rotate_operation(t_stack **stack)
 	first->next = NULL;
 }
 
-void	reverse_rotate(t_stack **stack_a, t_stack **stack_b, char move)
+void	reverse_rotate(t_stack **stack_a, t_stack **stack_b, int move)
 {
-	if (!(move == '1' || move == '2' || move == '3'))
+	if (!(move == RRA || move == RRB || move == RRR))
 		write(1, "Reverse Rotate: fix your code\n", 31);
 	if (stack_a == NULL && stack_b == NULL)
 		return ;
-	if (move == '1' || move == '3')
+	if (move == RRA || move == RRR)
 		reverse_rotate_operation(stack_a);
-	if (move == '2' || move == '3')
+	if (move == RRB || move == RRR)
 		reverse_rotate_operation(stack_b);
-	if (move == '1')
+	if (move == RRA)
 		write(1, "rra\n", 4);
-	if (move == '2')
+	if (move == RRB)
 		write(1, "rrb\n", 4);
-	if (move == '3')
+	if (move == RRR)
 		write(1, "rrr\n", 4);
 }
 

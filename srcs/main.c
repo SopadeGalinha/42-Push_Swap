@@ -12,11 +12,31 @@
 
 #include "push_swap.h"
 
-void	sort_stack(t_stack **stack_a, t_stack **stack_b, t_push *st)
+static void	ft_clean(t_stack **stack_a, t_stack **stack_b, t_push *st)
+{
+	t_stack	*tmp;
+
+	while (*stack_a)
+	{
+		tmp = *stack_a;
+		*stack_a = (*stack_a)->next;
+		free(tmp);
+	}
+	while (*stack_b)
+	{
+		tmp = *stack_b;
+		*stack_b = (*stack_b)->next;
+		free(tmp);
+	}
+	if (st->error == true)
+		write(2, "Error\n", 6);
+}
+
+static void	sort_stack(t_stack **stack_a, t_stack **stack_b, t_push *st)
 {
 	if (ft_lstsorted(*stack_a))
 		return ;
-	if (st->size < 6)
+	if (st->size_of_a < 6)
 		sort_under_five(stack_a, stack_b, st);
 	else
 		sort_over_five(stack_a, stack_b, st);
@@ -40,6 +60,7 @@ int	main(int ac, char **av)
 	return (0);
 }
 
+/*
 static void	ft_print_a(t_stack *temporary_a, unsigned int size)
 {
 	if (temporary_a)
@@ -82,7 +103,7 @@ void	ft_printlist(t_stack *stack_a, t_stack *stack_b, t_push *st)
 
 	temporary_a = stack_a;
 	temporary_b = stack_b;
-	size = (st->size + st->size_of_b) / 4;
+	size = (st->size_of_a + st->size_of_b) / 4;
 	printf("_____________________________________\n");
 	printf("    Stack A	|        Stack B");
 	while (temporary_a != NULL || temporary_b != NULL)
@@ -102,3 +123,5 @@ void	ft_printlist(t_stack *stack_a, t_stack *stack_b, t_push *st)
 	else
 		printf("\033[0;35m\nNOT SORTED\n\033[0m");
 }
+
+*/
