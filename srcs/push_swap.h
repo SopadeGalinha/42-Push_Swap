@@ -29,7 +29,6 @@ typedef struct s_stack
 {
 	int				value;
 	unsigned int	index;
-	unsigned int	reverse;
 	struct s_stack	*next;
 	struct s_stack	*prev;
 }	t_stack;
@@ -40,8 +39,6 @@ typedef struct s_push
 	unsigned int	size_of_a;
 	unsigned int	size_of_b;
 	unsigned int	reference;
-	unsigned int	better;
-	unsigned int	match;
 }	t_push;
 
 enum e_moves
