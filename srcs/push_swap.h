@@ -12,7 +12,7 @@
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
-# define FD 1
+# define FD -1
 
 /*________________________________HEADERS__________________________________*/
 
@@ -31,14 +31,16 @@ typedef struct s_stack
 	unsigned int	index;
 	struct s_stack	*next;
 	struct s_stack	*prev;
+	int	target;
 }	t_stack;
 
 typedef struct s_push
 {
 	bool			error;
-	unsigned int	size_of_a;
-	unsigned int	size_of_b;
-	unsigned int	reference;
+	int				r[2];
+	int				rr[2];
+	int	size_of_a;
+	int	size_of_b;
 }	t_push;
 
 enum e_moves
@@ -54,6 +56,8 @@ enum e_moves
 	RRR,
 	PB,
 	PA,
+	STACK_A = 0,
+	STACK_B = 1
 };
 
 /*__________________________________PROTOTYPES_____________________________*/
@@ -84,5 +88,8 @@ void			reverse_rotate(t_stack **stack_a, t_stack **stack_b, int move);
 // ALGORITHM
 void			sort_over_five(t_stack **stacka, t_stack **stackb, t_push *st);
 void			sort_under_five(t_stack **stacka, t_stack **stackb, t_push *st);
+void			ft_printlist(t_stack *stack_a, t_stack *stack_b, t_push *st);
+
+
 
 #endif

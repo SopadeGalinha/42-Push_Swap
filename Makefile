@@ -10,12 +10,14 @@
 #                                                                              #
 # **************************************************************************** #
 
+.SILENT:
+
 NAME = push_swap
 
 CC = cc
 
 SRC =	srcs/main.c srcs/init_stack.c srcs/utils.c srcs/ft_split.c \
-		srcs/push_or_swap.c srcs/reverse_or_rotate.c \
+		srcs/push_or_swap.c srcs/reverse_or_rotate.c srcs/inutils.c \
 		srcs/sort_over_five.c srcs/sort_under_five.c srcs/init_utils.c
 
 OBJS = $(SRC:.c=.o)
@@ -44,5 +46,3 @@ leak: $(NAME)
 	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 
 .PHONY: all clean fclean re norm
-
-

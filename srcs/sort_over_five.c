@@ -12,115 +12,115 @@
 
 #include "push_swap.h"
 
-static void	first_part(t_stack **stack_a, t_stack **stack_b, t_push *st)
+// Função para definir os targets na stack A
+static void set_target(t_stack **stack_a, t_stack **stack_b, t_push *st)
 {
-	st->reference = ft_smallest(*stack_a) + ft_biggest(*stack_a);
-	st->reference /= 2;
-	while (ft_smallest(*stack_a) < st->reference)
-	{
-		if (st->reference > (*stack_a)->index)
-			push(stack_a, stack_b, PB, st);
-		else
-		{
-			if (st->size_of_b > 5 && (*stack_b)->index > st->reference)
-				rotate(stack_a, stack_b, RR);
-			else
-				rotate(stack_a, stack_b, RA);
-		}
-		if (st->size_of_b > 7 && ((*stack_b)->index < st->reference / 2))
-		{
-			if ((*stack_a)->index > st->reference)
-				rotate(stack_a, stack_b, RR);
-			else
-				rotate(stack_a, stack_b, RB);
-		}
-	}
-}
+	(void)st;
 
-static void	second_part(t_stack **stack_a, t_stack **stack_b, t_push *st)
-{
-	while (st->size_of_a > 5)
-	{
-		if (lst_distance(*stack_a, ft_smallest(*stack_a)) < st->size_of_a / 2)
-		{
-			if (st->size_of_b > 1
-				&& (*stack_b)->index < (*stack_b)->next->index)
-				rotate(stack_a, stack_b, RR);
-			else
-				rotate(stack_a, stack_b, RA);
-		}
-		else
-			reverse_rotate(stack_a, stack_b, RRA);
-		if (ft_smallest(*stack_a) == (*stack_a)->index)
-			push(stack_a, stack_b, PB, st);
-	}
-	if (!ft_lstsorted(*stack_a))
-		sort_under_five(stack_a, stack_b, st);
-}
+	t_stack *temporary_a;
+	t_stack *temporary_b;
 
-static void	its_on_stack_a(t_stack **stack_a, t_stack **stack_b, t_push *st)
-{
-	while (st->reference != (*stack_a)->index)
+	temporary_a = *stack_a;
+	while (temporary_a != NULL)
 	{
-		if (ft_lstlast(*stack_b)->index > (*stack_b)->index)
-			reverse_rotate(stack_a, stack_b, RRR);
-		else
-			reverse_rotate(stack_a, stack_b, RRA);
-	}
-	st->reference -= 1;
-}
-
-static void	its_on_stack_b(t_stack **stack_a, t_stack **stack_b, t_push *st)
-{
-	if (lst_distance(*stack_b, st->reference) > st->size_of_b / 2)
-	{
-		while (st->reference != (*stack_b)->index)
+		temporary_b = *stack_b;
+		temporary_a->target = INT_MIN;
+		while (temporary_b != NULL)
 		{
-			if (ft_lstlast(*stack_a)->index == ft_biggest(*stack_a)
-				|| ft_lstlast(*stack_a)->index < (*stack_b)->index)
+			if (temporary_b->value < temporary_a->value && temporary_b->value > temporary_a->target)
 			{
-				push(stack_a, stack_b, PA, st);
-				rotate(stack_a, stack_b, RA);
+				temporary_a->target = temporary_b->value;
 			}
-			else
-				reverse_rotate(stack_a, stack_b, RRB);
+			temporary_b = temporary_b->next;
 		}
+		if (temporary_a->target == INT_MIN)
+			temporary_a->target = ft_biggest(*stack_b);
+		temporary_a = temporary_a->next;
 	}
+}
+
+
+void	get_cust(t_stack **stack_a, t_stack **stack_b, t_push *st, t_stack *node)
+{
+	t_stack *temporary;
+
+	(void)st;
+	(void)stack_b;
+	int index = 0;
+	int	ra;
+	int	rra;
+	int rb;
+	int rrb;
+
+	ra = INT_MAX;
+	rra = INT_MAX;
+	rb = INT_MAX;
+	rrb = INT_MAX;
+	// Set moves to put the value on top of stack A
+	temporary = *stack_a;
+	while (temporary->value != node->value && index++ != -1)
+		temporary = temporary->next;
+	if (index > st->size_of_a / 2)
+		rra = st->size_of_a - index;
 	else
+		ra = index;
+	printf("value: %d - index: %d \nra: %d - rra: %d\n\n", node->value, index, ra, rra);
+	
+	// Set moves to put the target on top of stack B
+	index = 0;
+	temporary = *stack_b;
+	while (temporary->value != node->target && index++ != -1)
+		temporary = temporary->next;
+	if (index > st->size_of_b / 2)
+		rrb = st->size_of_b - index;
+	else
+		rb = index;
+	printf("target: %d - index: %d \nrb: %d - rrb: %d\n\n", node->target, index, rb, rrb);
+	if (ra == INT_MAX)
+		ra = 0;
+	if (rra == INT_MAX)
+		rra = 0;
+	if (rb == INT_MAX)
+		rb = 0;
+	if (rrb == INT_MAX)
+		rrb = 0;
+	if (ra + rb < st->r[0] + st->r[1])
 	{
-		while (st->reference != (*stack_b)->index)
-		{
-			if (ft_lstlast(*stack_a)->index < (*stack_b)->index
-				|| ft_lstlast(*stack_a)->index == ft_biggest(*stack_a))
-			{
-				if ((*stack_a)->next->index != st->reference)
-					push(stack_a, stack_b, PA, st);
-				if ((*stack_b)->index < (*stack_b)->next->index)
-					rotate(stack_a, stack_b, RR);
-				else
-					rotate(stack_a, stack_b, RA);
-			}
-			else
-				rotate(stack_a, stack_b, RB);
-		}
+		st->r[0] = ra;
+		st->r[1] = rb;
 	}
-	push(stack_a, stack_b, PA, st);
-	st->reference -= 1;
+	if (rra + rrb < st->rr[0] + st->rr[1])
+	{
+		st->rr[0] = rra;
+		st->rr[1] = rrb;
+	}
+	printf("r: %d - %d\nrr: %d - %d\n\n", st->r[0], st->r[1], st->rr[0], st->rr[1]);
+}
+
+void set_cust(t_stack **stack_a, t_stack **stack_b, t_push *st)
+{
+	t_stack *temporary_a;
+
+	temporary_a = *stack_a;
+	st->r[0] = 20000;
+	st->r[1] = 20000;
+	st->rr[0] = 20000;
+	st->rr[1] = 20000;
+	while (temporary_a != NULL)
+	{
+		get_cust(stack_a, stack_b, st, temporary_a);
+		temporary_a = temporary_a->next;
+	}
 }
 
 void	sort_over_five(t_stack **stack_a, t_stack **stack_b, t_push *st)
 {
-	while (st->size_of_a > 12)
-		first_part(stack_a, stack_b, st);
-	second_part(stack_a, stack_b, st);
-	st->reference = (*stack_a)->index - 1;
-	while (st->size_of_b > 0)
-	{
-		if (is_on_the_list(stack_a, st->reference))
-			its_on_stack_a(stack_a, stack_b, st);
-		else
-			its_on_stack_b(stack_a, stack_b, st);
-	}
-	while (ft_lstsorted(*stack_a) == false)
-		reverse_rotate(stack_a, stack_b, RRA);
+	push(stack_a, stack_b, PB, st);
+	push(stack_a, stack_b, PB, st);
+	push(stack_a, stack_b, PB, st);
+	push(stack_a, stack_b, PB, st);
+	push(stack_a, stack_b, PB, st);
+	set_target(stack_a, stack_b, st);
+	set_cust(stack_a, stack_b, st);
+	ft_printlist(*stack_a, *stack_b, st);
 }
