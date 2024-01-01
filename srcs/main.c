@@ -32,16 +32,6 @@ static void	ft_clean(t_stack **stack_a, t_stack **stack_b, t_push *st)
 		write(2, "Error\n", 6);
 }
 
-static void	sort_stack(t_stack **stack_a, t_stack **stack_b, t_push *st)
-{
-	if (ft_lstsorted(*stack_a))
-		return ;
-	if (st->size_of_a < 6)
-		sort_under_five(stack_a, stack_b, st);
-	else
-		sort_over_five(stack_a, stack_b, st);
-}
-
 int	main(int ac, char **av)
 {
 	t_stack	*stack_a;
@@ -55,7 +45,11 @@ int	main(int ac, char **av)
 	st = (t_push){0};
 	init_stack(&stack_a, ac, av, &st);
 	if (st.error == false)
-		sort_stack(&stack_a, &stack_b, &st);
+	{
+		if (st.size_of_a > 3)
+			sort_list(&stack_a, &stack_b, &st);
+		sort_three(&stack_a, &stack_b, &st);
+	}
 	ft_clean(&stack_a, &stack_b, &st);
 	return (0);
 }

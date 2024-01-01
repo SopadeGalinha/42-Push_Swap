@@ -18,7 +18,7 @@ CC = cc
 
 SRC =	srcs/main.c srcs/init_stack.c srcs/utils.c srcs/ft_split.c \
 		srcs/push_or_swap.c srcs/reverse_or_rotate.c srcs/inutils.c \
-		srcs/sort_over_five.c srcs/sort_under_five.c srcs/init_utils.c
+		srcs/sort_list.c srcs/sort_three.c srcs/set_cust.c
 
 OBJS = $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address

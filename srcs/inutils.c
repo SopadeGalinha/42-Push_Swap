@@ -17,13 +17,13 @@ static void	ft_print_a(t_stack *temporary_a, int size)
 	if (temporary_a)
 	{
 		if (temporary_a->value < size)
-			printf("\033[0;34m%9u\033[0m - [%u]", temporary_a->value, temporary_a->target);
+			printf("\033[0;34m%4d\033[0m - [%u]", temporary_a->value, temporary_a->target);
 		else if (temporary_a->value < size * 2)
-			printf("\033[0;32m%8u\033[0m - [%u]" , temporary_a->value, temporary_a->target);
+			printf("\033[0;32m%4d\033[0m - [%u]" , temporary_a->value, temporary_a->target);
 		else if (temporary_a->value < size * 3)
-			printf("\033[0;33m%8u\033[0m - [%u]" , temporary_a->value, temporary_a->target);
+			printf("\033[0;33m%4d\033[0m - [%u]" , temporary_a->value, temporary_a->target);
 		else
-			printf("\033[0;31m%8u\033[0m - [%u]" , temporary_a->value, temporary_a->target);
+			printf("\033[0;31m%4d\033[0m - [%u]" , temporary_a->value, temporary_a->target);
 	}
 	else
 		printf(" %9c  ", ' ');
@@ -34,14 +34,14 @@ static void	ft_print_b(t_stack *temporary_b, int size)
 {
 	if (temporary_b != NULL)
 	{
-		if (temporary_b->value < size)
-			printf("\033[0;34m%8u\033[0m", temporary_b->value);
+		if (temporary_b->value < size) 
+			printf("\033[0;34m%u\033[0m - [%d] %4c", temporary_b->value, temporary_b->target, ' ');
 		else if (temporary_b->value < size * 2)
-			printf("\033[0;32m%8u\033[0m", temporary_b->value);
+			printf("\033[0;32m%u\033[0m - [%d] %4c", temporary_b->value, temporary_b->target, ' ');
 		else if (temporary_b->value < size * 3)
-			printf("\033[0;33m%8u\033[0m", temporary_b->value);
+			printf("\033[0;33m%u\033[0m - [%d] %4c", temporary_b->value, temporary_b->target, ' ');
 		else
-			printf("\033[0;31m%8u\033[0m", temporary_b->value);
+			printf("\033[0;31m%u\033[0m - [%d] %4c", temporary_b->value, temporary_b->target, ' ');
 	}
 }
 
@@ -56,12 +56,12 @@ void	ft_printlist(t_stack *stack_a, t_stack *stack_b, t_push *st)
 	temporary_b = stack_b;
 	size = (st->size_of_a + st->size_of_b) / 4;
 	printf("_______________________________________\n");
-	printf("	Stack A		|    Stack B");
+	printf("	Stack A	|    Stack B");
 	while (temporary_a != NULL || temporary_b != NULL)
 	{
 		printf("\n");
 		ft_print_a(temporary_a, size);
-		printf(" 	|  ");
+		printf("%9c|  ", ' ');
 		ft_print_b(temporary_b, size);
 		if (temporary_b != NULL)
 			temporary_b = temporary_b->next;

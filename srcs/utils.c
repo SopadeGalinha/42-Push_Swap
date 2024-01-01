@@ -1,16 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jhogonca <jhogonca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/28 06:26:42 by jhogonca          #+#    #+#             */
-/*   Updated: 2023/07/28 06:26:42 by jhogonca         ###   ########.fr       */
+/*   Created: 2023/07/28 17:28:53 by jhogonca          #+#    #+#             */
+/*   Updated: 2023/07/28 17:28:53 by jhogonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	ft_isdigit(char *str, t_push *st)
+{
+	int	i;
+
+	if (st->error == true)
+		return ;
+	i = 0;
+	if ((str[i] == '-' || str[i] == '+')
+		&& (str[i + 1] != '\0' && str[i + 1] != ' '))
+		i++;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			st->error = true;
+		i++;
+	}
+}
+
+t_stack	*ft_lstlast(t_stack *lst)
+{
+	t_stack	*last;
+
+	if (!lst)
+		return (NULL);
+	last = lst;
+	while (last->next)
+		last = last->next;
+	return (last);
+}
+
+void	ft_free_split(char **split)
+{
+	int	i;
+
+	i = -1;
+	while (split[++i])
+		free(split[i]);
+	free(split);
+}
 
 bool	ft_lstsorted(t_stack *list)
 {
@@ -26,63 +66,54 @@ bool	ft_lstsorted(t_stack *list)
 	return (true);
 }
 
-unsigned int	ft_smallest(t_stack *list)
+void set_target_in_b(t_stack **stack_a, t_stack **stack_b, t_push *st)
 {
-	t_stack			*tmp;
-	unsigned int	smallest;
+	(void)st;
 
-	tmp = list;
-	smallest = tmp->index;
-	while (tmp)
+	t_stack *temporary_a;
+	t_stack *temporary_b;
+
+	temporary_a = *stack_a;
+	while (temporary_a != NULL)
 	{
-		if (tmp->index < smallest)
-			smallest = tmp->index;
-		tmp = tmp->next;
+		temporary_b = *stack_b;
+		temporary_a->target = INT_MIN;
+		while (temporary_b != NULL)
+		{
+			if (temporary_b->value < temporary_a->value && temporary_b->value > temporary_a->target)
+			{
+				temporary_a->target = temporary_b->value;
+			}
+			temporary_b = temporary_b->next;
+		}
+		if (temporary_a->target == INT_MIN)
+			temporary_a->target = ft_biggest(*stack_b);
+		temporary_a = temporary_a->next;
 	}
-	return (smallest);
 }
 
-unsigned int	ft_biggest(t_stack *list)
+void set_target_in_a(t_stack **stack_a, t_stack **stack_b, t_push *st)
 {
-	t_stack			*tmp;
-	unsigned int	biggest;
+    (void)st;
 
-	tmp = list;
-	biggest = tmp->index;
-	while (tmp)
-	{
-		if (tmp->index > biggest)
-			biggest = tmp->index;
-		tmp = tmp->next;
-	}
-	return (biggest);
-}
+    t_stack *temporary_a;
+    t_stack *temporary_b;
 
-unsigned	int	lst_distance(t_stack *stack_a, unsigned int index)
-{
-	t_stack			*node;
-	unsigned int	distance;
-
-	node = stack_a;
-	distance = 0;
-	while (node->index != index)
-	{
-		node = node->next;
-		distance++;
-	}
-	return (distance);
-}
-
-bool	is_on_the_list(t_stack **stack, unsigned int index)
-{
-	t_stack	*node;
-
-	node = *stack;
-	while (node)
-	{
-		if (node->index == index)
-			return (true);
-		node = node->next;
-	}
-	return (false);
+    temporary_b = *stack_b;
+    while (temporary_b != NULL)
+    {
+        temporary_a = *stack_a;
+        temporary_b->target = INT_MAX;  // Change to INT_MAX for initialization
+        while (temporary_a != NULL)
+        {
+            if (temporary_a->value > temporary_b->value && temporary_a->value < temporary_b->target)
+            {
+                temporary_b->target = temporary_a->value;
+            }
+            temporary_a = temporary_a->next;
+        }
+        if (temporary_b->target == INT_MAX)
+            temporary_b->target = ft_smallest(*stack_a);  // Use ft_smallest to find the minimum value
+        temporary_b = temporary_b->next;
+    }
 }

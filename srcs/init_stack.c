@@ -39,7 +39,6 @@ void	init_stack(t_stack **stack_a, int ac, char **av, t_push *st)
 	}
 	if (ac == 2)
 		ft_free_split(av);
-	insert_index(stack_a, st);
 }
 
 static t_stack	*ft_lstnew(int value)
@@ -52,7 +51,6 @@ static t_stack	*ft_lstnew(int value)
 		new->value = value;
 		new->next = NULL;
 		new->prev = NULL;
-		new->index = 0;
 	}
 	return (new);
 }

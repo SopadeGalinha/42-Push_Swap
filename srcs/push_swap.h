@@ -27,37 +27,37 @@
 
 typedef struct s_stack
 {
+	int				target;
 	int				value;
-	unsigned int	index;
 	struct s_stack	*next;
 	struct s_stack	*prev;
-	int	target;
 }	t_stack;
 
 typedef struct s_push
 {
 	bool			error;
+	int				rotate[6];
 	int				r[2];
 	int				rr[2];
+	int				_rrr;
+	int				_rr;
 	int	size_of_a;
 	int	size_of_b;
 }	t_push;
 
 enum e_moves
 {
+	RA,
+	RB,
+	RRA,
+	RRB,
+	RR,
+	RRR,
 	SA,
 	SB,
 	SS,
-	RA,
-	RB,
-	RR,
-	RRA,
-	RRB,
-	RRR,
-	PB,
 	PA,
-	STACK_A = 0,
-	STACK_B = 1
+	PB,
 };
 
 /*__________________________________PROTOTYPES_____________________________*/
@@ -67,16 +67,17 @@ enum e_moves
 t_stack			*ft_lstlast(t_stack *lst);
 void			ft_free_split(char **split);
 char			**ft_split(char const *s, char c);
-void			insert_index(t_stack **stack_a, t_push *st);
 void			ft_isdigit(char *str, t_push *st);
 void			init_stack(t_stack **stack_a, int ac, char **av, t_push *st);
 
 // UTILS
-unsigned int	ft_smallest(t_stack *list);
-unsigned int	ft_biggest(t_stack *list);
 bool			ft_lstsorted(t_stack *list);
-bool			is_on_the_list(t_stack **stack, unsigned int index);
-unsigned int	lst_distance(t_stack *stack_a, unsigned int index);
+int				ft_biggest(t_stack *list);
+int				ft_smallest(t_stack *list);
+void			set_target_in_b(t_stack **stack_a, t_stack **stack_b, t_push *st);
+void			set_target_in_a(t_stack **stack_a, t_stack **stack_b, t_push *st);
+
+// INUTILS
 void			ft_printlist(t_stack *stack_a, t_stack *stack_b, t_push *st);
 
 // OPERATIONS
@@ -86,10 +87,8 @@ void			rotate(t_stack **stack_a, t_stack **stack_b, int move);
 void			reverse_rotate(t_stack **stack_a, t_stack **stack_b, int move);
 
 // ALGORITHM
-void			sort_over_five(t_stack **stacka, t_stack **stackb, t_push *st);
-void			sort_under_five(t_stack **stacka, t_stack **stackb, t_push *st);
-void			ft_printlist(t_stack *stack_a, t_stack *stack_b, t_push *st);
-
-
+void			sort_list(t_stack **stacka, t_stack **stackb, t_push *st);
+void			set_cust(t_stack **stack_a, t_stack **stack_b, t_push *st, int stack);
+void			sort_three(t_stack **stacka, t_stack **stackb, t_push *st);
 
 #endif
