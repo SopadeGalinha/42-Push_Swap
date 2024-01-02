@@ -52,26 +52,10 @@ void	ft_free_split(char **split)
 	free(split);
 }
 
-bool	ft_lstsorted(t_stack *list)
+void	set_target_in_b(t_stack **stack_a, t_stack **stack_b)
 {
-	t_stack	*tmp;
-
-	tmp = list;
-	while (tmp->next)
-	{
-		if (tmp->value > tmp->next->value)
-			return (false);
-		tmp = tmp->next;
-	}
-	return (true);
-}
-
-void set_target_in_b(t_stack **stack_a, t_stack **stack_b, t_push *st)
-{
-	(void)st;
-
-	t_stack *temporary_a;
-	t_stack *temporary_b;
+	t_stack	*temporary_a;
+	t_stack	*temporary_b;
 
 	temporary_a = *stack_a;
 	while (temporary_a != NULL)
@@ -80,7 +64,8 @@ void set_target_in_b(t_stack **stack_a, t_stack **stack_b, t_push *st)
 		temporary_a->target = INT_MIN;
 		while (temporary_b != NULL)
 		{
-			if (temporary_b->value < temporary_a->value && temporary_b->value > temporary_a->target)
+			if (temporary_b->value < temporary_a->value
+				&& temporary_b->value > temporary_a->target)
 			{
 				temporary_a->target = temporary_b->value;
 			}
@@ -92,28 +77,27 @@ void set_target_in_b(t_stack **stack_a, t_stack **stack_b, t_push *st)
 	}
 }
 
-void set_target_in_a(t_stack **stack_a, t_stack **stack_b, t_push *st)
+void	set_target_in_a(t_stack **stack_a, t_stack **stack_b)
 {
-    (void)st;
+	t_stack	*temporary_a;
+	t_stack	*temporary_b;
 
-    t_stack *temporary_a;
-    t_stack *temporary_b;
-
-    temporary_b = *stack_b;
-    while (temporary_b != NULL)
-    {
-        temporary_a = *stack_a;
-        temporary_b->target = INT_MAX;  // Change to INT_MAX for initialization
-        while (temporary_a != NULL)
-        {
-            if (temporary_a->value > temporary_b->value && temporary_a->value < temporary_b->target)
-            {
-                temporary_b->target = temporary_a->value;
-            }
-            temporary_a = temporary_a->next;
-        }
-        if (temporary_b->target == INT_MAX)
-            temporary_b->target = ft_smallest(*stack_a);  // Use ft_smallest to find the minimum value
-        temporary_b = temporary_b->next;
-    }
+	temporary_b = *stack_b;
+	while (temporary_b != NULL)
+	{
+		temporary_a = *stack_a;
+		temporary_b->target = INT_MAX;
+		while (temporary_a != NULL)
+		{
+			if (temporary_a->value > temporary_b->value
+				&& temporary_a->value < temporary_b->target)
+			{
+				temporary_b->target = temporary_a->value;
+			}
+			temporary_a = temporary_a->next;
+		}
+		if (temporary_b->target == INT_MAX)
+			temporary_b->target = ft_smallest(*stack_a);
+		temporary_b = temporary_b->next;
+	}
 }

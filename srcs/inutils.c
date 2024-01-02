@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jhogonca <jhogonca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/31 00:53:49 by jhogonca          #+#    #+#             */
-/*   Updated: 2023/12/31 00:53:49 by jhogonca         ###   ########.fr       */
+/*   Created: 2024/01/01 23:54:08 by jhogonca          #+#    #+#             */
+/*   Updated: 2024/01/01 23:54:08 by jhogonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,17 @@ static void	ft_print_a(t_stack *temporary_a, int size)
 	if (temporary_a)
 	{
 		if (temporary_a->value < size)
-			printf("\033[0;34m%4d\033[0m - [%u]", temporary_a->value, temporary_a->target);
+			printf("\033[0;34m%4d\033[0m -%2c [%3u]", \
+			temporary_a->value, ' ', temporary_a->target);
 		else if (temporary_a->value < size * 2)
-			printf("\033[0;32m%4d\033[0m - [%u]" , temporary_a->value, temporary_a->target);
+			printf("\033[0;32m%4d\033[0m -%2c [%3u]", \
+			temporary_a->value, ' ', temporary_a->target);
 		else if (temporary_a->value < size * 3)
-			printf("\033[0;33m%4d\033[0m - [%u]" , temporary_a->value, temporary_a->target);
+			printf("\033[0;33m%4d\033[0m -%2c [%3u]", \
+			temporary_a->value, ' ', temporary_a->target);
 		else
-			printf("\033[0;31m%4d\033[0m - [%u]" , temporary_a->value, temporary_a->target);
+			printf("\033[0;31m%4d\033[0m -%2c [%3u]", \
+			temporary_a->value, ' ', temporary_a->target);
 	}
 	else
 		printf(" %9c  ", ' ');
@@ -34,14 +38,18 @@ static void	ft_print_b(t_stack *temporary_b, int size)
 {
 	if (temporary_b != NULL)
 	{
-		if (temporary_b->value < size) 
-			printf("\033[0;34m%u\033[0m - [%d] %4c", temporary_b->value, temporary_b->target, ' ');
+		if (temporary_b->value < size)
+			printf("\033[0;34m%u\033[0m - [%d] %4c", \
+			temporary_b->value, temporary_b->target, ' ');
 		else if (temporary_b->value < size * 2)
-			printf("\033[0;32m%u\033[0m - [%d] %4c", temporary_b->value, temporary_b->target, ' ');
+			printf("\033[0;32m%u\033[0m - [%d] %4c", \
+			temporary_b->value, temporary_b->target, ' ');
 		else if (temporary_b->value < size * 3)
-			printf("\033[0;33m%u\033[0m - [%d] %4c", temporary_b->value, temporary_b->target, ' ');
+			printf("\033[0;33m%u\033[0m - [%d] %4c", \
+			temporary_b->value, temporary_b->target, ' ');
 		else
-			printf("\033[0;31m%u\033[0m - [%d] %4c", temporary_b->value, temporary_b->target, ' ');
+			printf("\033[0;31m%u\033[0m - [%d] %4c", \
+			temporary_b->value, temporary_b->target, ' ');
 	}
 }
 
@@ -61,7 +69,7 @@ void	ft_printlist(t_stack *stack_a, t_stack *stack_b, t_push *st)
 	{
 		printf("\n");
 		ft_print_a(temporary_a, size);
-		printf("%9c|  ", ' ');
+		printf("%2c|  ", ' ');
 		ft_print_b(temporary_b, size);
 		if (temporary_b != NULL)
 			temporary_b = temporary_b->next;

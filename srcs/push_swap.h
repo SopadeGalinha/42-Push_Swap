@@ -12,7 +12,6 @@
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
-# define FD -1
 
 /*________________________________HEADERS__________________________________*/
 
@@ -37,12 +36,8 @@ typedef struct s_push
 {
 	bool			error;
 	int				rotate[6];
-	int				r[2];
-	int				rr[2];
-	int				_rrr;
-	int				_rr;
-	int	size_of_a;
-	int	size_of_b;
+	int				size_of_a;
+	int				size_of_b;
 }	t_push;
 
 enum e_moves
@@ -74,8 +69,8 @@ void			init_stack(t_stack **stack_a, int ac, char **av, t_push *st);
 bool			ft_lstsorted(t_stack *list);
 int				ft_biggest(t_stack *list);
 int				ft_smallest(t_stack *list);
-void			set_target_in_b(t_stack **stack_a, t_stack **stack_b, t_push *st);
-void			set_target_in_a(t_stack **stack_a, t_stack **stack_b, t_push *st);
+void			set_target_in_b(t_stack **stk_a, t_stack **stk_b);
+void			set_target_in_a(t_stack **stk_a, t_stack **stk_b);
 
 // INUTILS
 void			ft_printlist(t_stack *stack_a, t_stack *stack_b, t_push *st);
@@ -88,7 +83,7 @@ void			reverse_rotate(t_stack **stack_a, t_stack **stack_b, int move);
 
 // ALGORITHM
 void			sort_list(t_stack **stacka, t_stack **stackb, t_push *st);
-void			set_cust(t_stack **stack_a, t_stack **stack_b, t_push *st, int stack);
+void			set_cust(t_stack **stk_a, t_stack **stk_b, t_push *st, int stk);
 void			sort_three(t_stack **stacka, t_stack **stackb, t_push *st);
 
 #endif
