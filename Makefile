@@ -1,5 +1,3 @@
-.SILENT:
-
 NAME = push_swap
 NAME_BONUS = checker
 
@@ -16,7 +14,7 @@ MAIN_OBJ = srcs/main.o
 OBJS = $(SRC:.c=.o)
 OBJS_BONUS = $(SRC_BONUS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -O3 -Wall -Wextra -Werror -g -fsanitize=address
 HEADER = srcs/push_swap.h
 
 all: $(NAME)

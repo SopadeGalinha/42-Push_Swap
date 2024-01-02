@@ -16,13 +16,11 @@
 /*________________________________HEADERS__________________________________*/
 
 # include <stdio.h>
-# include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
 # include <stdbool.h>
 
-# define BUFFER_SIZE 777
 /*__________________________________STRUCTS________________________________*/
 
 typedef struct s_stack
