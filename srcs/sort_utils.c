@@ -17,24 +17,24 @@ void	sort_three(t_stack **stack_a, t_stack **stack_b, t_push *st)
 	if (ft_lstsorted(*stack_a))
 		return ;
 	if (st->size_of_a == 2)
-		swap(stack_a, stack_b, SA);
+		swap(stack_a, stack_b, SA, st);
 	while (ft_lstsorted(*stack_a) == false)
 	{
 		if ((*stack_a)->value == ft_smallest(*stack_a)
 			&& (*stack_a)->next->value == ft_biggest(*stack_a))
-			reverse_rotate(stack_a, stack_b, RRA);
+			reverse_rotate(stack_a, stack_b, RRA, st);
 		else if ((*stack_a)->value == ft_biggest(*stack_a)
 			&& ft_lstlast(*stack_a)->value == ft_smallest(*stack_a))
-			swap(stack_a, stack_b, SA);
+			swap(stack_a, stack_b, SA, st);
 		else if (ft_lstlast(*stack_a)->value == ft_smallest(*stack_a)
 			&& (*stack_a)->next->value == ft_biggest(*stack_a))
-			reverse_rotate(stack_a, stack_b, RRA);
+			reverse_rotate(stack_a, stack_b, RRA, st);
 		else if ((*stack_a)->value == ft_biggest(*stack_a)
 			&& (*stack_a)->next->value == ft_smallest(*stack_a))
-			rotate(stack_a, stack_b, RA);
+			rotate(stack_a, stack_b, RA, st);
 		else if (ft_lstlast(*stack_a)->value == ft_biggest(*stack_a)
 			&& (*stack_a)->next->value == ft_smallest(*stack_a))
-			swap(stack_a, stack_b, SA);
+			swap(stack_a, stack_b, SA, st);
 		else
 			break ;
 	}
@@ -84,4 +84,16 @@ int	ft_biggest(t_stack *list)
 		tmp = tmp->next;
 	}
 	return (biggest);
+}
+
+t_stack	*ft_lstlast(t_stack *lst)
+{
+	t_stack	*last;
+
+	if (!lst)
+		return (NULL);
+	last = lst;
+	while (last->next)
+		last = last->next;
+	return (last);
 }

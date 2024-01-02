@@ -30,18 +30,6 @@ void	ft_isdigit(char *str, t_push *st)
 	}
 }
 
-t_stack	*ft_lstlast(t_stack *lst)
-{
-	t_stack	*last;
-
-	if (!lst)
-		return (NULL);
-	last = lst;
-	while (last->next)
-		last = last->next;
-	return (last);
-}
-
 void	ft_free_split(char **split)
 {
 	int	i;
@@ -100,4 +88,24 @@ void	set_target_in_a(t_stack **stack_a, t_stack **stack_b)
 			temporary_b->target = ft_smallest(*stack_a);
 		temporary_b = temporary_b->next;
 	}
+}
+
+void	ft_clean(t_stack **stack_a, t_stack **stack_b, t_push *st)
+{
+	t_stack	*tmp;
+
+	while (*stack_a)
+	{
+		tmp = *stack_a;
+		*stack_a = (*stack_a)->next;
+		free(tmp);
+	}
+	while (*stack_b)
+	{
+		tmp = *stack_b;
+		*stack_b = (*stack_b)->next;
+		free(tmp);
+	}
+	if (st->error == true)
+		write(2, "Error\n", 6);
 }

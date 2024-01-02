@@ -9,14 +9,14 @@ SRC = srcs/init_stack.c srcs/utils.c srcs/ft_split.c \
 	srcs/push_or_swap.c srcs/reverse_or_rotate.c srcs/inutils.c \
 	srcs/sort_list.c srcs/sort_utils.c srcs/set_cust.c
 
-SRC_BONUS = srcs/bonus_main.c srcs/bonus_gnl.c
+SRC_BONUS = srcs/checker.c srcs/bonus.c
 
 MAIN_OBJ = srcs/main.o
 
 OBJS = $(SRC:.c=.o)
 OBJS_BONUS = $(SRC_BONUS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror -g # -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 HEADER = srcs/push_swap.h
 
 all: $(NAME)

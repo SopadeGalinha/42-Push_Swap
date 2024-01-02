@@ -15,17 +15,17 @@
 static void	execute_moves(t_stack **stack_a, t_stack **stack_b, t_push *st)
 {
 	while (st->rotate[RRR]--)
-		reverse_rotate(stack_a, stack_b, RRR);
+		reverse_rotate(stack_a, stack_b, RRR, st);
 	while (st->rotate[RR]--)
-		rotate(stack_a, stack_b, RR);
+		rotate(stack_a, stack_b, RR, st);
 	while (st->rotate[RA]--)
-		rotate(stack_a, stack_b, RA);
+		rotate(stack_a, stack_b, RA, st);
 	while (st->rotate[RB]--)
-		rotate(stack_a, stack_b, RB);
+		rotate(stack_a, stack_b, RB, st);
 	while (st->rotate[RRA]--)
-		reverse_rotate(stack_a, stack_b, RRA);
+		reverse_rotate(stack_a, stack_b, RRA, st);
 	while (st->rotate[RRB]--)
-		reverse_rotate(stack_a, stack_b, RRB);
+		reverse_rotate(stack_a, stack_b, RRB, st);
 }
 
 void	sort_list(t_stack **stack_a, t_stack **stack_b, t_push *st)
@@ -50,5 +50,5 @@ void	sort_list(t_stack **stack_a, t_stack **stack_b, t_push *st)
 		push(stack_a, stack_b, PA, st);
 	}
 	while (ft_lstsorted(*stack_a) == false)
-		reverse_rotate(stack_a, stack_b, RRA);
+		reverse_rotate(stack_a, stack_b, RRA, st);
 }

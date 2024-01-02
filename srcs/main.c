@@ -12,26 +12,6 @@
 
 #include "push_swap.h"
 
-static void	ft_clean(t_stack **stack_a, t_stack **stack_b, t_push *st)
-{
-	t_stack	*tmp;
-
-	while (*stack_a)
-	{
-		tmp = *stack_a;
-		*stack_a = (*stack_a)->next;
-		free(tmp);
-	}
-	while (*stack_b)
-	{
-		tmp = *stack_b;
-		*stack_b = (*stack_b)->next;
-		free(tmp);
-	}
-	if (st->error == true)
-		write(2, "Error\n", 6);
-}
-
 int	main(int ac, char **av)
 {
 	t_stack	*stack_a;
@@ -43,6 +23,7 @@ int	main(int ac, char **av)
 	stack_a = NULL;
 	stack_b = NULL;
 	st = (t_push){0};
+	st.fd = STDOUT_FILENO;
 	init_stack(&stack_a, ac, av, &st);
 	if (st.error == false)
 	{
