@@ -22,6 +22,7 @@
 # include <limits.h>
 # include <stdbool.h>
 
+# define BUFFER_SIZE 777
 /*__________________________________STRUCTS________________________________*/
 
 typedef struct s_stack
@@ -39,6 +40,14 @@ typedef struct s_push
 	int				size_of_a;
 	int				size_of_b;
 }	t_push;
+
+typedef struct s_gnl
+{
+	char	*line;
+	long	size_line;
+	long	index;
+	long	size_buffer;
+}	t_gnl;
 
 enum e_moves
 {
@@ -86,4 +95,6 @@ void			sort_list(t_stack **stacka, t_stack **stackb, t_push *st);
 void			set_cust(t_stack **stk_a, t_stack **stk_b, t_push *st, int stk);
 void			sort_three(t_stack **stacka, t_stack **stackb, t_push *st);
 
+// BONUs
+char 			*get_next_line(int fd);
 #endif
