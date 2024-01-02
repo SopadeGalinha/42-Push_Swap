@@ -12,64 +12,6 @@
 
 #include "push_swap.h"
 
-static char	*get_line(char *line, char *buffer, long size_buffer, long *sz_line)
-{
-	t_gnl	gnl;
-
-	gnl.size_line = -1;
-	gnl.index = -1;
-	gnl.size_buffer = -1;
-	gnl.line = line;
-	*sz_line += size_buffer;
-	line = malloc(*sz_line + 1 * sizeof(char));
-	if (line)
-	{
-		line[*sz_line] = 0;
-		while (gnl.line && gnl.line[++gnl.size_line])
-			line[++gnl.index] = gnl.line[gnl.size_line];
-		gnl.size_line = -1;
-		while (buffer && buffer[++gnl.size_line])
-		{
-			if (gnl.size_line < size_buffer)
-				line[++gnl.index] = buffer[gnl.size_line];
-			else
-				buffer[++gnl.size_buffer] = buffer[gnl.size_line];
-			buffer[gnl.size_line] = 0;
-		}
-	}
-	free(gnl.line);
-	return (line);
-}
-
-char	*get_next_line(int fd)
-{
-	t_gnl		gnl;
-	static char	buf[BUFFER_SIZE + 1];
-
-	gnl.line = NULL;
-	gnl.size_line = 0;
-	gnl.size_buffer = 0;
-	while (buf[gnl.size_buffer] && fd >= 0 && fd)
-		gnl.size_buffer++;
-	gnl.index = 1;
-	while (fd >= 0 && gnl.index > 0)
-	{
-		if (!buf[0] || !gnl.size_buffer)
-			gnl.size_buffer = read(fd, buf, BUFFER_SIZE);
-		gnl.index = gnl.size_buffer;
-		if (gnl.size_buffer > 0)
-		{
-			gnl.size_buffer = 0;
-			while (buf[gnl.size_buffer] && buf[gnl.size_buffer] != '\n')
-				gnl.size_buffer++;
-			gnl.index = (gnl.index == gnl.size_buffer);
-			gnl.size_buffer += buf[gnl.size_buffer] == '\n';
-			gnl.line = get_line(gnl.line, buf, gnl.size_buffer, &gnl.size_line);
-		}
-	}
-	return (gnl.line);
-}
-
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
@@ -81,6 +23,76 @@ int	ft_strcmp(const char *s1, const char *s2)
 		if (s1[i] != s2[i])
 			break ;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+bool	auxiliar(t_stack **stack_a, t_stack **stack_b, t_push *st, char *line)
+{
+	if (ft_strcmp(line, "pa") == 0)
+		push(stack_a, stack_b, PA, st);
+	else if (ft_strcmp(line, "pb") == 0)
+		push(stack_a, stack_b, PB, st);
+	else if (ft_strcmp(line, "ra") == 0)
+		rotate(stack_a, stack_b, RA, st);
+	else if (ft_strcmp(line, "rb") == 0)
+		rotate(stack_a, stack_b, RB, st);
+	else if (ft_strcmp(line, "rr") == 0)
+		rotate(stack_a, stack_b, RR, st);
+	else if (ft_strcmp(line, "rra") == 0)
+		reverse_rotate(stack_a, stack_b, RRA, st);
+	else if (ft_strcmp(line, "rrb") == 0)
+		reverse_rotate(stack_a, stack_b, RRB, st);
+	else if (ft_strcmp(line, "rrr") == 0)
+		reverse_rotate(stack_a, stack_b, RRR, st);
+	else
+	{
+		st->error = true;
+		return (false);
+	}
+	return (true);
+}
+
+void	execute_cmd(t_stack **stack_a, t_stack **stack_b, \
+t_push *st, char *line)
+{
+	if (ft_strcmp(line, "sa") == 0)
+		swap(stack_a, stack_b, SA, st);
+	else if (ft_strcmp(line, "sb") == 0)
+		swap(stack_a, stack_b, SB, st);
+	else if (ft_strcmp(line, "ss") == 0)
+		swap(stack_a, stack_b, SS, st);
+	else
+		if (!auxiliar(stack_a, stack_b, st, line))
+			st->error = true;
+}
+
+void	read_instructions(t_stack **stack_a, \
+t_stack **stack_b, t_push *st)
+{
+	char	*line;
+	int		i;
+	char	c;
+
+	i = 0;
+	line = NULL;
+	while (read(0, &c, 1))
+	{
+		if (line == NULL)
+			line = malloc(sizeof(char) * 4);
+		if (c == '\n' || i == 3)
+		{
+			line[i] = '\0';
+			execute_cmd(stack_a, stack_b, st, line);
+			if (st->error)
+				break ;
+			i = 0;
+			free(line);
+			line = NULL;
+		}
+		else
+			line[i++] = c;
+	}
+	if (line != NULL)
+		free(line);
 }
 
 int	main(int ac, char **av)
@@ -96,7 +108,7 @@ int	main(int ac, char **av)
 	st = (t_push){0};
 	st.fd = -1;
 	init_stack(&stack_a, ac, av, &st);
-	if (st.error == false)
+	if (!st.error)
 		read_instructions(&stack_a, &stack_b, &st);
 	if (!st.error)
 	{

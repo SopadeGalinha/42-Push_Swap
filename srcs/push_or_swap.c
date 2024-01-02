@@ -29,6 +29,8 @@ void	swap(t_stack **stack_a, t_stack **stack_b, int move, t_push *st)
 		swap_operation(stack_a);
 	if (move == SB || move == SS)
 		swap_operation(stack_b);
+	if (st->fd == -1)
+		return ;
 	if (move == SA)
 		write(st->fd, "sa\n", 3);
 	if (move == SB)
@@ -71,6 +73,8 @@ void	push(t_stack **stack_a, t_stack **stack_b, int move, t_push *st)
 		st->size_of_a++;
 		st->size_of_b--;
 	}
+	if (st->fd == -1)
+		return ;
 	if (move == PB)
 		write(st->fd, "pb\n", 3);
 	if (move == PA)

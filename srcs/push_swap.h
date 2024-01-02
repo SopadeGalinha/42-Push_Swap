@@ -94,7 +94,6 @@ void			set_target_in_b(t_stack **stk_a, t_stack **stk_b);
 void			ft_clean(t_stack **stack_a, t_stack **stack_b, t_push *st);
 
 // BONUS
-char			*get_next_line(int fd);
 void			read_instructions(t_stack **stk_a, t_stack **stk_b, t_push *st);
 int				ft_strcmp(const char *s1, const char *s2);
 // INUTILS
