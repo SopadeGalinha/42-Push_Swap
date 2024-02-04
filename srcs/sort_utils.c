@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_under_five.c                                  :+:      :+:    :+:   */
+/*   sort_utils.c	                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jhogonca <jhogonca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -14,8 +14,6 @@
 
 void	sort_three(t_stack **stack_a, t_stack **stack_b, t_push *st)
 {
-	if (ft_lstsorted(*stack_a))
-		return ;
 	if (st->size_of_a == 2)
 		swap(stack_a, stack_b, SA, st);
 	while (ft_lstsorted(*stack_a) == false)

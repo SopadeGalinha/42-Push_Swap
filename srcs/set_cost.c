@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_cust.c                                         :+:      :+:    :+:   */
+/*   get_moves.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jhogonca <jhogonca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,28 +12,94 @@
 
 #include "push_swap.h"
 
-static void	set_values_aux(t_push *st, int *rotate)
+static void	set_values_aux(t_push *st, int *rotate);
+static void	set_values(t_push *st, int *rotate, bool init);
+static void	get_min_moves_to_a(t_stack **stack_a, t_stack **stack_b, \
+t_push *st, t_stack *node);
+static void	get_min_moves_to_b(t_stack **stack_a, t_stack **stack_b, \
+t_push *st, t_stack *node);
+
+void	get_moves(t_stack **stack_a, t_stack **stack_b, t_push *st, int stack)
 {
-	if (rotate[RRA] > 0 && rotate[RRB] > 0)
+	t_stack	*temporary;
+
+	temporary = *stack_b;
+	if (stack == 'A')
+		temporary = *stack_a;
+	st->rotate[RA] = 100;
+	st->rotate[RB] = 100;
+	st->rotate[RR] = 100;
+	st->rotate[RRA] = 100;
+	st->rotate[RRB] = 100;
+	st->rotate[RRR] = 100;
+	while (temporary != NULL)
 	{
-		while (rotate[RRA] && rotate[RRB])
-		{
-			rotate[RRR]++;
-			rotate[RRA]--;
-			rotate[RRB]--;
-		}
+		if (stack == 'A')
+			get_min_moves_to_a(stack_a, stack_b, st, temporary);
+		else
+			get_min_moves_to_b(stack_a, stack_b, st, temporary);
+		temporary = temporary->next;
 	}
-	if (rotate[RA] + rotate[RB] + rotate[RRA] + rotate[RRB] \
-		+ rotate[RR] + rotate[RRR] < st->rotate[RA] + st->rotate[RB] \
-		+ st->rotate[RRA] + st->rotate[RRB] + st->rotate[RRR] + st->rotate[RR])
-	{
-		st->rotate[RA] = rotate[RA];
-		st->rotate[RB] = rotate[RB];
-		st->rotate[RR] = rotate[RR];
-		st->rotate[RRA] = rotate[RRA];
-		st->rotate[RRB] = rotate[RRB];
-		st->rotate[RRR] = rotate[RRR];
-	}
+}
+
+static void	get_min_moves_to_a(t_stack **stack_a, t_stack **stack_b, \
+t_push *st, t_stack *node)
+{
+	int		index;
+	int		rotate[6];
+	t_stack	*temporary;
+
+	index = 0;
+	rotate[RR] = 0;
+	rotate[RRR] = 0;
+	rotate[RRB] = INT_MAX;
+	set_values(st, rotate, true);
+	temporary = *stack_a;
+	while (temporary->value != node->value && index++ != -1)
+		temporary = temporary->next;
+	if (index > st->size_of_a / 2)
+		rotate[RRA] = st->size_of_a - index;
+	else
+		rotate[RA] = index;
+	index = 0;
+	temporary = *stack_b;
+	while (temporary->value != node->target && index++ != -1)
+		temporary = temporary->next;
+	if (index > st->size_of_b / 2)
+		rotate[RRB] = st->size_of_b - index;
+	else
+		rotate[RB] = index;
+	return (set_values(st, rotate, false));
+}
+
+static void	get_min_moves_to_b(t_stack **stack_a, t_stack **stack_b, \
+t_push *st, t_stack *node)
+{
+	int		index;
+	int		rotate[6];
+	t_stack	*temporary;
+
+	index = 0;
+	rotate[RR] = 0;
+	rotate[RRR] = 0;
+	rotate[RRB] = INT_MAX;
+	set_values(st, rotate, true);
+	temporary = *stack_b;
+	while (temporary->value != node->value && index++ != -1)
+		temporary = temporary->next;
+	if (index > st->size_of_b / 2)
+		rotate[RRB] = st->size_of_b - index;
+	else
+		rotate[RB] = index;
+	index = 0;
+	temporary = *stack_a;
+	while (temporary->value != node->target && index++ != -1)
+		temporary = temporary->next;
+	if (index > st->size_of_a / 2)
+		rotate[RRA] = st->size_of_a - index;
+	else
+		rotate[RA] = index;
+	return (set_values(st, rotate, false));
 }
 
 static void	set_values(t_push *st, int *rotate, bool init)
@@ -65,85 +131,26 @@ static void	set_values(t_push *st, int *rotate, bool init)
 	set_values_aux(st, rotate);
 }
 
-void	get_cust(t_stack **stack_a, t_stack **stack_b, \
-t_push *st, t_stack *node)
+static void	set_values_aux(t_push *st, int *rotate)
 {
-	int		index;
-	int		rotate[6];
-	t_stack	*temporary;
-
-	index = 0;
-	rotate[RR] = 0;
-	rotate[RRR] = 0;
-	rotate[RRB] = INT_MAX;
-	set_values(st, rotate, true);
-	temporary = *stack_a;
-	while (temporary->value != node->value && index++ != -1)
-		temporary = temporary->next;
-	if (index > st->size_of_a / 2)
-		rotate[RRA] = st->size_of_a - index;
-	else
-		rotate[RA] = index;
-	index = 0;
-	temporary = *stack_b;
-	while (temporary->value != node->target && index++ != -1)
-		temporary = temporary->next;
-	if (index > st->size_of_b / 2)
-		rotate[RRB] = st->size_of_b - index;
-	else
-		rotate[RB] = index;
-	return (set_values(st, rotate, false));
-}
-
-void	get_cust_to_b(t_stack **stack_a, t_stack **stack_b, \
-t_push *st, t_stack *node)
-{
-	int		index;
-	int		rotate[6];
-	t_stack	*temporary;
-
-	index = 0;
-	rotate[RR] = 0;
-	rotate[RRR] = 0;
-	rotate[RRB] = INT_MAX;
-	set_values(st, rotate, true);
-	temporary = *stack_b;
-	while (temporary->value != node->value && index++ != -1)
-		temporary = temporary->next;
-	if (index > st->size_of_b / 2)
-		rotate[RRB] = st->size_of_b - index;
-	else
-		rotate[RB] = index;
-	index = 0;
-	temporary = *stack_a;
-	while (temporary->value != node->target && index++ != -1)
-		temporary = temporary->next;
-	if (index > st->size_of_a / 2)
-		rotate[RRA] = st->size_of_a - index;
-	else
-		rotate[RA] = index;
-	return (set_values(st, rotate, false));
-}
-
-void	set_cust(t_stack **stack_a, t_stack **stack_b, t_push *st, int stack)
-{
-	t_stack	*temporary;
-
-	temporary = *stack_b;
-	if (stack == 'A')
-		temporary = *stack_a;
-	st->rotate[RA] = 100;
-	st->rotate[RB] = 100;
-	st->rotate[RR] = 100;
-	st->rotate[RRA] = 100;
-	st->rotate[RRB] = 100;
-	st->rotate[RRR] = 100;
-	while (temporary != NULL)
+	if (rotate[RRA] > 0 && rotate[RRB] > 0)
 	{
-		if (stack == 'A')
-			get_cust(stack_a, stack_b, st, temporary);
-		else
-			get_cust_to_b(stack_a, stack_b, st, temporary);
-		temporary = temporary->next;
+		while (rotate[RRA] && rotate[RRB])
+		{
+			rotate[RRR]++;
+			rotate[RRA]--;
+			rotate[RRB]--;
+		}
+	}
+	if (rotate[RA] + rotate[RB] + rotate[RRA] + rotate[RRB] \
+		+ rotate[RR] + rotate[RRR] < st->rotate[RA] + st->rotate[RB] \
+		+ st->rotate[RRA] + st->rotate[RRB] + st->rotate[RRR] + st->rotate[RR])
+	{
+		st->rotate[RA] = rotate[RA];
+		st->rotate[RB] = rotate[RB];
+		st->rotate[RR] = rotate[RR];
+		st->rotate[RRA] = rotate[RRA];
+		st->rotate[RRB] = rotate[RRB];
+		st->rotate[RRR] = rotate[RRR];
 	}
 }

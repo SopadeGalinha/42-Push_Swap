@@ -26,6 +26,8 @@ void	init_stack(t_stack **stack_a, int ac, char **av, t_push *st)
 	if (ac == 2)
 	{
 		av = ft_split(av[1], ' ');
+		if (!*av)
+			st->error = true;
 		i = -1;
 	}
 	while (av[++i] && st->error == false)
@@ -97,12 +99,11 @@ static int	ft_atoi(char *str, t_push *st)
 		if (str[i++] == '-')
 			sign = -1;
 	}
-	while (str[i])
+	while (str[i] && st->error == false)
 	{
 		nbr = nbr * 10 + (str[i++] - '0');
-		if (nbr > 2147483647)
-			if (!(nbr == 2147483648 && sign == -1))
-				st->error = true;
+		if (nbr < 0)
+			st->error = true;
 	}
 	return (nbr * sign);
 }

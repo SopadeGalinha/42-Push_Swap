@@ -23,16 +23,13 @@ int	main(int ac, char **av)
 	stack_a = NULL;
 	stack_b = NULL;
 	st = (t_push){0};
-	st.fd = STDOUT_FILENO;
 	init_stack(&stack_a, ac, av, &st);
-	if (st.error == false)
+	if (!st.error)
 	{
 		if (st.size_of_a > 3)
 			sort_list(&stack_a, &stack_b, &st);
 		sort_three(&stack_a, &stack_b, &st);
 	}
 	ft_clean(&stack_a, &stack_b, &st);
-	if (st.error)
-		return (1);
-	return (0);
+	return (st.error);
 }

@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+static int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
 
@@ -25,24 +25,24 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-bool	auxiliar(t_stack **stack_a, t_stack **stack_b, t_push *st, char *line)
+static bool	auxiliar(t_stack **stk_a, t_stack **stk_b, t_push *st, char *line)
 {
 	if (ft_strcmp(line, "pa") == 0)
-		push(stack_a, stack_b, PA, st);
+		push(stk_a, stk_b, PA, st);
 	else if (ft_strcmp(line, "pb") == 0)
-		push(stack_a, stack_b, PB, st);
+		push(stk_a, stk_b, PB, st);
 	else if (ft_strcmp(line, "ra") == 0)
-		rotate(stack_a, stack_b, RA, st);
+		rotate(stk_a, stk_b, RA, st);
 	else if (ft_strcmp(line, "rb") == 0)
-		rotate(stack_a, stack_b, RB, st);
+		rotate(stk_a, stk_b, RB, st);
 	else if (ft_strcmp(line, "rr") == 0)
-		rotate(stack_a, stack_b, RR, st);
+		rotate(stk_a, stk_b, RR, st);
 	else if (ft_strcmp(line, "rra") == 0)
-		reverse_rotate(stack_a, stack_b, RRA, st);
+		reverse_rotate(stk_a, stk_b, RRA, st);
 	else if (ft_strcmp(line, "rrb") == 0)
-		reverse_rotate(stack_a, stack_b, RRB, st);
+		reverse_rotate(stk_a, stk_b, RRB, st);
 	else if (ft_strcmp(line, "rrr") == 0)
-		reverse_rotate(stack_a, stack_b, RRR, st);
+		reverse_rotate(stk_a, stk_b, RRR, st);
 	else
 	{
 		st->error = true;
@@ -51,7 +51,7 @@ bool	auxiliar(t_stack **stack_a, t_stack **stack_b, t_push *st, char *line)
 	return (true);
 }
 
-void	execute_cmd(t_stack **stack_a, t_stack **stack_b, \
+static void	execute_cmd(t_stack **stack_a, t_stack **stack_b, \
 t_push *st, char *line)
 {
 	if (ft_strcmp(line, "sa") == 0)
@@ -65,7 +65,7 @@ t_push *st, char *line)
 			st->error = true;
 }
 
-void	read_instructions(t_stack **stack_a, \
+static void	read_instructions(t_stack **stack_a, \
 t_stack **stack_b, t_push *st)
 {
 	char	*line;
@@ -91,7 +91,7 @@ t_stack **stack_b, t_push *st)
 		else
 			line[i++] = c;
 	}
-	if (line != NULL)
+	if (line)
 		free(line);
 }
 
@@ -106,7 +106,7 @@ int	main(int ac, char **av)
 	stack_a = NULL;
 	stack_b = NULL;
 	st = (t_push){0};
-	st.fd = -1;
+	st.checker = true;
 	init_stack(&stack_a, ac, av, &st);
 	if (!st.error)
 		read_instructions(&stack_a, &stack_b, &st);
@@ -118,7 +118,5 @@ int	main(int ac, char **av)
 			write(1, "KO\n", 3);
 	}
 	ft_clean(&stack_a, &stack_b, &st);
-	if (st.error)
-		return (1);
-	return (0);
+	return (st.error);
 }

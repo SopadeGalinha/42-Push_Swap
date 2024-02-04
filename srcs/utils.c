@@ -40,56 +40,6 @@ void	ft_free_split(char **split)
 	free(split);
 }
 
-void	set_target_in_b(t_stack **stack_a, t_stack **stack_b)
-{
-	t_stack	*temporary_a;
-	t_stack	*temporary_b;
-
-	temporary_a = *stack_a;
-	while (temporary_a != NULL)
-	{
-		temporary_b = *stack_b;
-		temporary_a->target = INT_MIN;
-		while (temporary_b != NULL)
-		{
-			if (temporary_b->value < temporary_a->value
-				&& temporary_b->value > temporary_a->target)
-			{
-				temporary_a->target = temporary_b->value;
-			}
-			temporary_b = temporary_b->next;
-		}
-		if (temporary_a->target == INT_MIN)
-			temporary_a->target = ft_biggest(*stack_b);
-		temporary_a = temporary_a->next;
-	}
-}
-
-void	set_target_in_a(t_stack **stack_a, t_stack **stack_b)
-{
-	t_stack	*temporary_a;
-	t_stack	*temporary_b;
-
-	temporary_b = *stack_b;
-	while (temporary_b != NULL)
-	{
-		temporary_a = *stack_a;
-		temporary_b->target = INT_MAX;
-		while (temporary_a != NULL)
-		{
-			if (temporary_a->value > temporary_b->value
-				&& temporary_a->value < temporary_b->target)
-			{
-				temporary_b->target = temporary_a->value;
-			}
-			temporary_a = temporary_a->next;
-		}
-		if (temporary_b->target == INT_MAX)
-			temporary_b->target = ft_smallest(*stack_a);
-		temporary_b = temporary_b->next;
-	}
-}
-
 void	ft_clean(t_stack **stack_a, t_stack **stack_b, t_push *st)
 {
 	t_stack	*tmp;

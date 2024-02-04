@@ -22,21 +22,21 @@ static void	push_operation(t_stack **src, t_stack **dst);
 void	swap(t_stack **stack_a, t_stack **stack_b, int move, t_push *st)
 {
 	if (!(move == SA || move == SB || move == SS))
-		write(st->fd, "Swap: fix your code\n", 20);
+		write(1, "Swap: fix your code\n", 20);
 	if (stack_a == NULL && stack_b == NULL)
 		return ;
 	if (move == SA || move == SS)
 		swap_operation(stack_a);
 	if (move == SB || move == SS)
 		swap_operation(stack_b);
-	if (st->fd == -1)
+	if (st->checker)
 		return ;
 	if (move == SA)
-		write(st->fd, "sa\n", 3);
+		write(1, "sa\n", 3);
 	if (move == SB)
-		write(st->fd, "sb\n", 3);
+		write(1, "sb\n", 3);
 	if (move == SS)
-		write(st->fd, "ss\n", 3);
+		write(1, "ss\n", 3);
 }
 
 static void	swap_operation(t_stack **stack)
@@ -60,7 +60,7 @@ static void	swap_operation(t_stack **stack)
 void	push(t_stack **stack_a, t_stack **stack_b, int move, t_push *st)
 {
 	if (!(move == PB || move == PA))
-		write(st->fd, "Push: fix your code\n", 20);
+		write(1, "Push: fix your code\n", 20);
 	if (move == PB)
 	{
 		push_operation(stack_a, stack_b);
@@ -73,12 +73,12 @@ void	push(t_stack **stack_a, t_stack **stack_b, int move, t_push *st)
 		st->size_of_a++;
 		st->size_of_b--;
 	}
-	if (st->fd == -1)
+	if (st->checker)
 		return ;
 	if (move == PB)
-		write(st->fd, "pb\n", 3);
+		write(1, "pb\n", 3);
 	if (move == PA)
-		write(st->fd, "pa\n", 3);
+		write(1, "pa\n", 3);
 }
 
 static void	push_operation(t_stack **src, t_stack **dst)
