@@ -5,31 +5,57 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jhogonca <jhogonca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/28 06:09:18 by jhogonca          #+#    #+#             */
-/*   Updated: 2023/07/28 06:09:18 by jhogonca         ###   ########.fr       */
+/*   Created: 2024/05/27 23:45:59 by jhogonca          #+#    #+#             */
+/*   Updated: 2024/05/27 23:45:59 by jhogonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
-int	main(int ac, char **av)
+static void	end_process(t_data *data, int argc, char **argv, bool error)
 {
-	t_stack	*stack_a;
-	t_stack	*stack_b;
-	t_push	st;
+	if (argc == 2)
+		free_array(argv);
+	clear(&data->stack_a);
+	clear(&data->stack_b);
+	if (error == false)
+		exit(EXIT_SUCCESS);
+	write(STDERR_FILENO, "Error\n", 6);
+	exit(EXIT_FAILURE);
+}
 
-	if (ac < 2)
-		return (0);
-	stack_a = NULL;
-	stack_b = NULL;
-	st = (t_push){0};
-	init_stack(&stack_a, ac, av, &st);
-	if (!st.error)
+static bool	initialization(t_data *data, int argc, char ***argv)
+{
+	int		index;
+	bool	error;
+
+	index = -1;
+	error = false;
+	if (argc == 2)
+		*argv = split((*argv)[1], ' ');
+	else
+		*argv = *argv + 1;
+	if (!*argv)
+		return (true);
+	while ((*argv)[++index])
 	{
-		if (st.size_of_a > 3)
-			sort_list(&stack_a, &stack_b, &st);
-		sort_three(&stack_a, &stack_b, &st);
+		if (push_back(&data->stack_a, ft_atoi((*argv)[index], &error)))
+			return (true);
+		data->size_of_a++;
 	}
-	ft_clean(&stack_a, &stack_b, &st);
-	return (st.error);
+	return (error);
+}
+
+int	main(int argc, char **argv)
+{
+	bool	error;
+	t_data	data;
+
+	data = (t_data){0};
+	if (argc < 2)
+		return (0);
+	error = initialization(&data, argc, &argv);
+	if (error == false)
+		sort(&data);
+	end_process(&data, argc, argv, error);
 }
