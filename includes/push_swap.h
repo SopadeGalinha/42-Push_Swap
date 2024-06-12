@@ -24,6 +24,15 @@
 #  define BONUS 0
 # endif
 
+# define DEBUG 1
+
+# define BOLD_GREEN "\033[1;32m"
+# define BOLD_RED "\033[1;31m"
+# define BOLD_BLUE "\033[1;34m"
+# define BOLD_YELLOW "\033[1;33m"
+# define RESET "\033[0m"
+# define BOLD_WHITE "\033[1;37m"
+
 /**
  * Structure for the stack.
  *
@@ -94,11 +103,28 @@ enum e_operations
 
 // ------------> Inutils <------------
 
-void	print_stack(t_stack *stack);
+void	print_stack(t_data *data);
 
 // ------------> Sort <------------
 
+/**
+ * Sorts the stack.
+ *
+ * @param data: The data structure.
+*/
 void	sort(t_data *data);
+
+/**
+ * @brief Sorts a stack with 3 elements
+ * 
+ * @param data The data structure
+ * @note possible cases: 3 2 1 = SA, RRA
+ * @note possible cases: 1 3 2 = SA, RA
+ * @note possible cases: 2 1 3 = SA
+ * @note possible cases: 2 3 1 = RRA
+ * @note possible cases: 3 1 2 = RA
+*/
+void	sort_three(t_data *data);
 
 /**
  * @brief Sorts a stack with 4 elements
@@ -108,7 +134,6 @@ void	sort(t_data *data);
  * @result 1 2 3 4 
 */
 void	sort_four(t_data *data);
-
 
 // ------------> Operations <------------
 

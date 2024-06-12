@@ -36,6 +36,8 @@ void	reverse_rotate(t_data *data, int move)
 		reverse_rotate_operation(&data->stack_a);
 	if (move == RRB || move == RRR)
 		reverse_rotate_operation(&data->stack_b);
+	if (DEBUG || BONUS)
+		return ;
 	if (move == RRA)
 		write(STDOUT_FILENO, "rra\n", 4);
 	else if (move == RRB)

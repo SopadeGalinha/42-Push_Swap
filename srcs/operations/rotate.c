@@ -38,6 +38,8 @@ void	rotate(t_data *data, int move)
 		rotate_operation(&data->stack_a);
 	if (move == RB || move == RR)
 		rotate_operation(&data->stack_b);
+	if (DEBUG || BONUS)
+		return ;
 	if (move == RA)
 		write(STDOUT_FILENO, "ra\n", 3);
 	else if (move == RB)
