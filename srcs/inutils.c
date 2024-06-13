@@ -44,7 +44,7 @@ void	print_stack(t_data *data)
 			temporary_a = temporary_a->next;
 		}
 		else
-			printf("   ");
+			printf("	");
 		printf(BOLD_WHITE"\t|  "RESET);
 		if (temporary_b)
 		{
@@ -52,7 +52,7 @@ void	print_stack(t_data *data)
 			temporary_b = temporary_b->next;
 		}
 		else
-			printf("   ");
+			printf("	");
 		printf("\n");
 	}
 }

@@ -11,12 +11,3 @@
 /* ************************************************************************** */
 
 #include "../../includes/push_swap.h"
-
-void	set_target(t_data *data)
-{
-	t_stack	*temp;
-
-	(void)data;
-	(void)temp;
-	temp = data->stack_a;
-}

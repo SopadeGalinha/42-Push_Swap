@@ -135,6 +135,25 @@ void	sort_three(t_data *data);
 */
 void	sort_four(t_data *data);
 
+/**
+ * Sets the target value for both stacks.
+ * The target value is the closest value in the other stack.
+ * 
+ * @param data The structure that contains the stacks.
+ * @note The target value for stack A is the closest value in stack B
+ * that is smaller than the current value.
+ * @note The target value for stack B is the closest value in stack A
+ * that is bigger than the current value.
+ * @note The target value is assigned to the target field of the stack.
+ * @note If there is no smaller value in stack B for stack A, it means that
+ * the current value is the smallest value in stack A, so the target value
+ * is assigned to the biggest value in stack B.
+ * @note If there is no bigger value in stack A for stack B, it means that
+ * the current value is the biggest value in stack B, so the target value
+ * is assigned to the smallest value in stack A.
+ */
+void	set_targets(t_data *data);
+
 // ------------> Operations <------------
 
 /**
