@@ -12,39 +12,6 @@
 
 #include "../../includes/push_swap.h"
 
-int	get_distance(t_stack *stack, int value)
-{
-	int	distance;
-
-	while (stack->value != value)
-	{
-		stack = stack->next;
-		distance++;
-	}
-	return (distance);
-}
-
-void	set_moves(t_data *data, int *moves, bool isfirstLoop)
-{
-	int		i;
-	int		distance;
-	t_stack	*temporary;
-
-	(void)isfirstLoop;
-	(void)moves;
-	i = -1;
-	while (++i < 6)
-		moves[i] = 100;
-	temporary = data->stack_a;
-	while (temporary != NULL)
-	{
-		distance = get_distance(data->stack_a, temporary->value);
-		printf("Value: %d - Distance: %d\n", temporary->value, distance);
-		temporary = temporary->next;
-	}
-	exit(0);
-}
-
 void	sort(t_data *data)
 {
 	int	moves[6];
@@ -59,4 +26,5 @@ void	sort(t_data *data)
 	push(data, PB);
 	push(data, PB);
 	set_targets(data);
+	set_moves(data, moves, true);
 }

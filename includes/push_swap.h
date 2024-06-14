@@ -20,12 +20,17 @@
 # include <limits.h>
 # include <stdio.h>
 
+// Macros
 # ifndef BONUS
 #  define BONUS 0
 # endif
-
 # define DEBUG 1
 
+// Constants
+# define VALUE 1
+# define TARGET 0
+
+// Colors
 # define BOLD_GREEN "\033[1;32m"
 # define BOLD_RED "\033[1;31m"
 # define BOLD_BLUE "\033[1;34m"
@@ -88,17 +93,17 @@ typedef struct s_data
 */
 enum e_operations
 {
-	SA,
-	SB,
-	PA,
-	PB,
 	RA,
 	RB,	
 	RRA,
 	RRB,
-	SS,
 	RR,
-	RRR
+	RRR,
+	SA,
+	SB,
+	PA,
+	PB,
+	SS
 };
 
 // ------------> Inutils <------------
