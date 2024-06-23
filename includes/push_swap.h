@@ -159,6 +159,8 @@ void	sort_four(t_data *data);
  */
 void	set_targets(t_data *data);
 
+void	set_moves(t_data *data, int *moves);
+
 // ------------> Operations <------------
 
 /**
