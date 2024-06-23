@@ -55,8 +55,7 @@ int	main(int argc, char **argv)
 	if (argc < 2)
 		return (0);
 	error = initialization(&data, argc, &argv);
-	if (error == false)
+	if (error == false && data.size_of_a > 1)
 		sort(&data);
-	print_stack(&data);
 	return (end_process(&data, argc, argv, error));
 }

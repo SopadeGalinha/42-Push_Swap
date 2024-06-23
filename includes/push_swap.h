@@ -18,13 +18,13 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <limits.h>
-# include <stdio.h>
 
 // Macros
 # ifndef BONUS
 #  define BONUS 0
 # endif
-# define DEBUG 1
+# define DEBUG 0
+# define INITIAL_VALUE 5
 
 // Constants
 # define VALUE 1
@@ -94,7 +94,7 @@ typedef struct s_data
 enum e_operations
 {
 	RA,
-	RB,	
+	RB,
 	RRA,
 	RRB,
 	RR,
@@ -159,7 +159,7 @@ void	sort_four(t_data *data);
  */
 void	set_targets(t_data *data);
 
-void	set_moves(t_data *data, int *moves);
+void	set_moves(t_data *data, int *moves, bool fistPart);
 
 // ------------> Operations <------------
 

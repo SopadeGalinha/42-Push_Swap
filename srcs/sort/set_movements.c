@@ -27,13 +27,12 @@ static int	distance_to_top(t_stack *stack, int reference)
 
 static void	update_moves(int *moves, int *temp_moves)
 {
-	int total_moves;
-	int total_temp_moves;
+	int	i;
+	int	total_moves;
+	int	total_temp_moves;
 
-	// Inicializar total_moves com a soma dos movimentos atuais
-	total_moves = moves[RA] + moves[RB] + moves[RRA] + moves[RRB] + moves[RR] + moves[RRR];
-
-	// Combinar movimentos em temp_moves
+	total_moves = moves[RA] + moves[RB] + moves[RR] + \
+	moves[RRA] + moves[RRB] + moves[RRR];
 	while (temp_moves[RA] > 0 && temp_moves[RB] > 0)
 	{
 		temp_moves[RA]--;
@@ -46,44 +45,72 @@ static void	update_moves(int *moves, int *temp_moves)
 		temp_moves[RRB]--;
 		temp_moves[RRR]++;
 	}
-
-	// Calcular o total de movimentos em temp_moves
-	total_temp_moves = temp_moves[RA] + temp_moves[RB] + temp_moves[RRA] + temp_moves[RRB] + temp_moves[RR] + temp_moves[RRR];
-
-	// Atualizar moves se total_temp_moves for menor que total_moves
-	if (total_temp_moves < total_moves)
-	{
-		for (int i = 0; i < 6; i++)
-			moves[i] = temp_moves[i];
-	}
-	printf("Total moves: %d\n", total_moves);
+	total_temp_moves = temp_moves[RA] + temp_moves[RB] + temp_moves[RR];
+	total_temp_moves += temp_moves[RRA] + temp_moves[RRB] + temp_moves[RRR];
+	i = -1;
+	while (++i < 6 && total_temp_moves < total_moves)
+		moves[i] = temp_moves[i];
 }
 
-void	set_moves(t_data *data, int *moves)
+static void	calculate_moves(t_data *data, int *moves)
 {
-	t_stack	*temporary_a;
-	int		distance_value;
-	int		distance_target;
-	int		temp_moves[6];
 	int		i;
+	int		distance[2];
+	int		temp_moves[6];
+	t_stack	*temporary;
 
-	temporary_a = data->stack_a;
-	while (temporary_a)
+	temporary = data->stack_a;
+	while (temporary)
 	{
-		i = 0;
-		while (i < 6)
-			temp_moves[i++] = 0;
-		distance_value = distance_to_top(data->stack_a, temporary_a->value);
-		distance_target = distance_to_top(data->stack_b, temporary_a->target);
-		if (distance_value > data->size_of_a / 2)
-			temp_moves[RRA] = data->size_of_a - distance_value;
+		i = -1;
+		while (++i < 6)
+			temp_moves[i] = 0;
+		distance[VALUE] = distance_to_top(data->stack_a, temporary->value);
+		distance[TARGET] = distance_to_top(data->stack_b, temporary->target);
+		if (distance[VALUE] > data->size_of_a / 2)
+			temp_moves[RRA] = data->size_of_a - distance[VALUE];
 		else
-			temp_moves[RA] = distance_value;
-		if (distance_target > data->size_of_b / 2)
-			temp_moves[RRB] = data->size_of_b - distance_target;
+			temp_moves[RA] = distance[VALUE];
+		if (distance[TARGET] > data->size_of_b / 2)
+			temp_moves[RRB] = data->size_of_b - distance[TARGET];
 		else
-			temp_moves[RB] = distance_target;
+			temp_moves[RB] = distance[TARGET];
 		update_moves(moves, temp_moves);
-		temporary_a = temporary_a->next;
+		temporary = temporary->next;
 	}
+}
+
+static void	calculate_moves_b(t_data *data, int *moves)
+{
+	int		i;
+	int		distance[2];
+	int		temp_moves[6];
+	t_stack	*temporary;
+
+	temporary = data->stack_b;
+	while (temporary)
+	{
+		i = -1;
+		while (++i < 6)
+			temp_moves[i] = 0;
+		distance[VALUE] = distance_to_top(data->stack_b, temporary->value);
+		distance[TARGET] = distance_to_top(data->stack_a, temporary->target);
+		if (distance[VALUE] > data->size_of_b / 2)
+			temp_moves[RRB] = data->size_of_b - distance[VALUE];
+		else
+			temp_moves[RB] = distance[VALUE];
+		if (distance[TARGET] > data->size_of_a / 2)
+			temp_moves[RRA] = data->size_of_a - distance[TARGET];
+		else
+			temp_moves[RA] = distance[TARGET];
+		update_moves(moves, temp_moves);
+		temporary = temporary->next;
+	}
+}
+
+void	set_moves(t_data *data, int *moves, bool fistPart)
+{
+	if (fistPart)
+		return (calculate_moves(data, moves));
+	return (calculate_moves_b(data, moves));
 }

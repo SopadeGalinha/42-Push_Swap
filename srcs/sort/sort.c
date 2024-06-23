@@ -28,27 +28,40 @@ void	execute_moves(t_data *data, int *moves)
 		reverse_rotate(data, RRB);
 }
 
-void	sort(t_data *data)
+static void	reset_moves(int *moves)
 {
-	int	moves[6];
 	int	i;
 
 	i = -1;
 	while (++i < 6)
-		moves[i] = 13;
-	if (stack_is_sorted(data->stack_a) == true)
-		return ;
-	if (data->size_of_a <= 4)
+		moves[i] = INITIAL_VALUE;
+}
+
+void	sort(t_data *data)
+{
+	int	moves[6];
+
+	if (stack_is_sorted(data->stack_a) == true || data->size_of_a <= 4)
 		return (sort_four(data));
 	push(data, PB);
 	push(data, PB);
-
-	print_stack(data);
-	while (data->size_of_a > 3)
+	while (data->size_of_a > 4)
 	{
+		reset_moves(moves);
 		set_targets(data);
-		set_moves(data, moves);
+		set_moves(data, moves, true);
 		execute_moves(data, moves);
 		push(data, PB);
 	}
+	sort_four(data);
+	while (data->size_of_b > 0)
+	{
+		reset_moves(moves);
+		set_targets(data);
+		set_moves(data, moves, false);
+		execute_moves(data, moves);
+		push(data, PA);
+	}
+	while (stack_is_sorted(data->stack_a) == false)
+		reverse_rotate(data, RRA);
 }

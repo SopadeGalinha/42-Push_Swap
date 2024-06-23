@@ -37,6 +37,8 @@ void	sort_three(t_data *data)
 
 void	sort_four(t_data *data)
 {
+	if (stack_is_sorted(data->stack_a) == true)
+		return ;
 	if (data->size_of_a <= 3)
 		return (sort_three(data));
 	if (smallest_value(data->stack_a) == stack_last(data->stack_a)->value)
@@ -59,29 +61,3 @@ void	sort_four(t_data *data)
 	if (stack_is_sorted(data->stack_a) == false)
 		swap(data, SA);
 }
-
-/*
-2 3 4 1 = 1 move
-2 1 3 4 = 1 move
-1 3 2 4 = 3 moves
-1 3 4 2 = 3 moves
-1 4 2 3 = 3 moves
-1 2 4 3 = 4 moves
-1 4 3 2 = 4 moves
-3 2 4 1 = 4 moves
-3 4 2 1 = 4 moves
-4 2 3 1 = 4 moves
-3 1 2 4 = 4 moves
-3 1 4 2 = 4 moves
-4 1 2 3 = 4 moves
-2 3 1 4 = 4 moves
-2 4 1 3 = 4 moves
-3 2 1 4 = 4 moves
-2 4 3 1 = 5 moves
-4 3 2 1 = 5 moves
-4 1 3 2 = 5 moves
-2 1 4 3 = 5 moves
-4 2 1 3 = 5 moves
-3 4 1 2 = 5 moves
-4 3 1 2 = 6 moves
-*/
