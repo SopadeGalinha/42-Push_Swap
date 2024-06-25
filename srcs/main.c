@@ -30,6 +30,7 @@ int	main(int ac, char **av)
 			sort_list(&stack_a, &stack_b, &st);
 		sort_three(&stack_a, &stack_b, &st);
 	}
+	ft_printlist(stack_a, stack_b, &st);
 	ft_clean(&stack_a, &stack_b, &st);
 	return (st.error);
 }
