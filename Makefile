@@ -23,6 +23,8 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(MAIN_OBJ)
 	@$(CC) $(CFLAGS) $(OBJS) $(MAIN_OBJ) -o $(NAME)
+	@printf "\033[0;32mPush_swap compiled successfully!\033[0m\n"
+	@printf "\033[0;32mRun ./push_swap <numbers> to test it!\033[0m\n"
 
 $(NAME_BONUS): $(OBJS_BONUS) $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS_BONUS) $(OBJS) -o $(NAME_BONUS)
