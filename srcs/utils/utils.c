@@ -12,6 +12,19 @@
 
 #include "../../includes/push_swap.h"
 
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	int	i;
+
+	i = -1;
+	if (!s1 || !s2)
+		return (i);
+	while (s1[++i] && s2[i])
+		if (s1[i] != s2[i])
+			break ;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
 bool	stack_is_sorted(t_stack *stack)
 {
 	t_stack	*tmp;
@@ -79,16 +92,4 @@ int	biggest_value(t_stack *stack)
 		tmp = tmp->next;
 	}
 	return (biggest);
-}
-
-t_stack	*stack_last(t_stack *stack)
-{
-	t_stack	*last;
-
-	if (!stack)
-		return (NULL);
-	last = stack;
-	while (last->next)
-		last = last->next;
-	return (last);
 }

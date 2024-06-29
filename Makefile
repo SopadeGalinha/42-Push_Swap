@@ -1,20 +1,21 @@
 .SILENT:
 
 # Name of the executable file to be generated
-NAME		= push_swap
+NAME        = push_swap
+CHECKER     = checker
 
 # Compiler
-CC			= cc -g
-FLAGS		= -Wall -Wextra -Werror -fsanitize=address
+CC          = cc -g
+FLAGS       = -Wall -Wextra -Werror -fsanitize=address
 
-RM			= /bin/rm -rf
+RM          = /bin/rm -rf
 
 # Directory to store object files
-OBJS_DIR	= objs/
+OBJS_DIR    = objs/
 
 # Color codes for terminal output
-RESET		= \033[0m
-GREEN		= \033[1;32m
+RESET       = \033[0m
+GREEN       = \033[1;32m
 
 # Directories containing source files
 SRC_DIRS := srcs
@@ -27,14 +28,20 @@ OBJS := $(patsubst $(SRC_DIRS)/%.c,$(OBJS_DIR)%.o,$(SRCS))
 
 # Compilation output
 COMPILE_COUNT = 0
-NUM_SRCS	= $(words $(SRCS))
+NUM_SRCS    = $(words $(SRCS))
 
 # Default target
 all: $(NAME)
 
-# Rule to build the executable
+# Bonus target
+bonus: $(CHECKER)
+
+# Rule to build the executables
 $(NAME): $(OBJS)
 	@$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+
+$(CHECKER): $(OBJS)
+	@$(CC) $(FLAGS) -D BONUS=1 $(OBJS) -o $(CHECKER)
 
 # Rule to compile each source file into an object file
 # Also prints a progress bar
@@ -42,19 +49,18 @@ $(OBJS_DIR)%.o: $(SRC_DIRS)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) -c $< -o $@
 	@$(eval COMPILE_COUNT=$(shell echo $$(($(COMPILE_COUNT)+1))))
-	@printf "\r[$(GREEN)%3d%%$(RESET)] \
-	Compiling: $<" $$(($(COMPILE_COUNT) * 100 / $(NUM_SRCS)))
+	@printf "\r[$(GREEN)%3d%%$(RESET)] Compiling: $<" $$(($(COMPILE_COUNT) * 100 / $(NUM_SRCS)))
 
 # Rule to clean object files
 clean:
 	$(RM) $(OBJS_DIR)
 
-# Rule to clean object files and the executable
+# Rule to clean object files and the executables
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(CHECKER)
 
-# Rule to clean object files, the executable, and recompile
+# Rule to clean object files, the executables, and recompile
 re: fclean all
 
 # Phony targets
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus

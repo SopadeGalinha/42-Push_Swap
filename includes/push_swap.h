@@ -23,6 +23,7 @@
 # ifndef BONUS
 #  define BONUS 0
 # endif
+
 # define DEBUG 0
 # define INITIAL_VALUE 55555
 
@@ -106,11 +107,7 @@ enum e_operations
 	SS
 };
 
-// ------------> Inutils <------------
-
-void	print_stack(t_data *data);
-
-// ------------> Sort <------------
+// ----------------------> Sort <--------------------------
 
 /**
  * Sorts the stack.
@@ -118,18 +115,6 @@ void	print_stack(t_data *data);
  * @param data: The data structure.
 */
 void	sort(t_data *data);
-
-/**
- * @brief Sorts a stack with 3 elements
- * 
- * @param data The data structure
- * @note possible cases: 3 2 1 = SA, RRA
- * @note possible cases: 1 3 2 = SA, RA
- * @note possible cases: 2 1 3 = SA
- * @note possible cases: 2 3 1 = RRA
- * @note possible cases: 3 1 2 = RA
-*/
-void	sort_three(t_data *data);
 
 /**
  * @brief Sorts a stack with 5 elements
@@ -157,18 +142,28 @@ void	sort_five(t_data *data);
  */
 void	set_targets(t_data *data);
 
-int	distance_to_top(t_stack *stack, int reference);
+/**
+ * Returns the distance to the top of the stack.
+ * 
+ * @param stack The stack.
+ * @param reference The reference value.
+ * @return The distance to the top of the stack.
+ * @note The distance is calculated by counting the number of moves
+ * needed to reach the reference value.
+ */
+int		distance_to_top(t_stack *stack, int reference);
 
 /**
  * Sets the moves to be executed.
  * 
  * @param data The data structure.
  * @param moves The array of moves.
- * @param fistPart If true, the moves are calculated for the first part of the sort. 
+ * @param fistPart If true, the moves are calculated for the 
+ * first part of the sort. 
 */
 void	set_moves(t_data *data, int *moves, bool fistPart);
 
-// ------------> Operations <------------
+// -------------------> Operations <------------------------
 
 /**
  * Swap the first two elements at the top of the stack.
@@ -216,7 +211,7 @@ void	rotate(t_data *data, int move);
 */
 void	reverse_rotate(t_data *data, int move);
 
-// ------------> Utils <------------
+// ----------------------> Utils <---------------------------
 
 /**
  * Converts a string to an integer.
@@ -263,14 +258,6 @@ bool	push_back(t_stack **stack, int value);
 void	clear(t_stack **stack);
 
 /**
- * Returns the last node of the stack.
- *
- * @param stack: The stack.
- * @return The last node of the stack.
- */
-t_stack	*stack_last(t_stack *stack);
-
-/**
  * Checks if the stack is sorted.
  *
  * @param stack: The stack.
@@ -292,7 +279,7 @@ int		smallest_value(t_stack *stack);
  * @param stack: The stack.
  * @return The second smallest value of the stack.
  */
-int	second_smallest_value(t_stack *stack);
+int		second_smallest_value(t_stack *stack);
 
 /**
  * Returns the biggest value of the stack.
@@ -301,4 +288,40 @@ int	second_smallest_value(t_stack *stack);
  * @return The biggest value of the stack.
  */
 int		biggest_value(t_stack *stack);
+
+// ---------------------> Bonus <--------------------------
+
+/**
+* @brief This function reads the commands from the 
+* standard input and executes them one by one until 
+* the end of the input or an error occurs.
+*
+* @param data The data structure.:
+*   - data: a pointer to the data structure 
+*/
+void	checker(t_data *data);
+
+/**
+ * Compares two strings.
+ *
+ * @param s1: The first string.
+ * @param s2: The second string.
+ * @return The difference between the first different characters.
+ */
+int		ft_strcmp(const char *s1, const char *s2);
+
+// ---------------------> Debug <--------------------------
+
+/** 
+ * Prints the stack. (For debugging purposes)
+ *
+ * @param data: The data structure.
+ * @note The stack is printed in the following format:
+ * 	1. The stack name.
+ * 	2. The values of the stack.
+ * 	3. The target values of the stack.
+ * 
+*/
+void	print_stack(t_data *data);
+
 #endif

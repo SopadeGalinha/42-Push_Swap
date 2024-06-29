@@ -12,6 +12,18 @@
 
 #include "../../includes/push_swap.h"
 
+static t_stack	*stack_last(t_stack *stack)
+{
+	t_stack	*last;
+
+	if (!stack)
+		return (NULL);
+	last = stack;
+	while (last->next)
+		last = last->next;
+	return (last);
+}
+
 void	sort_three(t_data *data)
 {
 	int	first;
