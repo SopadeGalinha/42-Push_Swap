@@ -1,50 +1,66 @@
 .SILENT:
 
-NAME = push_swap
-NAME_BONUS = checker
+# Name of the executable file to be generated
+NAME        = push_swap
+CHECKER     = checker
 
-CC = cc
+# Compiler
+CC          = cc -g
+FLAGS       = -Wall -Wextra -Werror -fsanitize=address
 
-SRC = srcs/init_stack.c srcs/utils.c srcs/ft_split.c \
-	srcs/push_or_swap.c srcs/reverse_or_rotate.c srcs/inutils.c \
-	srcs/sort_list.c srcs/sort_utils.c srcs/set_cust.c
+RM          = /bin/rm -rf
 
-SRC_BONUS = srcs/checker.c
+# Directory to store object files
+OBJS_DIR    = objs/
 
-MAIN_OBJ = srcs/main.o
+# Color codes for terminal output
+RESET       = \033[0m
+GREEN       = \033[1;32m
 
-OBJS = $(SRC:.c=.o)
-OBJS_BONUS = $(SRC_BONUS:.c=.o)
+# Directories containing source files
+SRC_DIRS := srcs
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
-HEADER = srcs/push_swap.h
+# Find all .c files recursively within SRC_DIRS
+SRCS := $(shell find $(SRC_DIRS) -name '*.c')
 
+# Generate object file paths from source file paths
+OBJS := $(patsubst $(SRC_DIRS)/%.c,$(OBJS_DIR)%.o,$(SRCS))
+
+# Compilation output
+COMPILE_COUNT = 0
+NUM_SRCS    = $(words $(SRCS))
+
+# Default target
 all: $(NAME)
 
-$(NAME): $(OBJS) $(MAIN_OBJ)
-	@$(CC) $(CFLAGS) $(OBJS) $(MAIN_OBJ) -o $(NAME)
-	@printf "\033[0;32mPush_swap compiled successfully!\033[0m\n"
-	@printf "\033[0;32mRun ./push_swap <numbers> to test it!\033[0m\n"
+bonus: $(CHECKER)
 
-$(NAME_BONUS): $(OBJS_BONUS) $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS_BONUS) $(OBJS) -o $(NAME_BONUS)
+$(NAME): EXEC_NAME = $(NAME)
 
-bonus: $(NAME_BONUS)
 
+$(CHECKER): EXEC_NAME = $(CHECKER)
+
+$(CHECKER) $(NAME): $(OBJS)
+	@$(CC) $(FLAGS) $(OBJS) -o $(EXEC_NAME)
+
+# Rule to compile each source file into an object file
+# Also prints a progress bar
+$(OBJS_DIR)%.o: $(SRC_DIRS)/%.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(FLAGS) -c $< -o $@
+	@$(eval COMPILE_COUNT=$(shell echo $$(($(COMPILE_COUNT)+1))))
+	@printf "\r[$(GREEN)%3d%%$(RESET)] Compiling: $<" $$(($(COMPILE_COUNT) * 100 / $(NUM_SRCS)))
+
+# Rule to clean object files
 clean:
-	@rm -f $(OBJS) $(OBJS_BONUS) $(MAIN_OBJ) # Include the main object file in clean
+	$(RM) $(OBJS_DIR)
 
+# Rule to clean object files and the executables
 fclean: clean
-	@rm -f $(NAME) $(NAME_BONUS)
+	$(RM) $(NAME) $(CHECKER)
 
+# Rule to clean object files, the executables, and recompile
 re: fclean all
 
-norm:
-	@printf "\033[0;31mRunning Norminette...\033[0m\n"
-	@norminette $(HEADER)
-	@norminette $(SRC)
-
-leak: $(NAME)
-	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
-
-.PHONY: all clean fclean re norm
+# Phony targets
+.PHONY: all clean fclean re bonus

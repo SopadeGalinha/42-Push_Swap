@@ -1,122 +1,88 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus_main.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jhogonca <jhogonca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/02 00:14:24 by jhogonca          #+#    #+#             */
-/*   Updated: 2024/01/02 00:14:24 by jhogonca         ###   ########.fr       */
+/*   Created: 2024/06/08 11:42:34 by jhogonca          #+#    #+#             */
+/*   Updated: 2024/06/08 11:42:34 by jhogonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
-static int	ft_strcmp(const char *s1, const char *s2)
+static bool	error(char *line)
 {
-	int	i;
-
-	i = -1;
-	if (!s1 || !s2)
-		return (i);
-	while (s1[++i] && s2[i])
-		if (s1[i] != s2[i])
-			break ;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
-
-static bool	auxiliar(t_stack **stk_a, t_stack **stk_b, t_push *st, char *line)
-{
-	if (ft_strcmp(line, "pa") == 0)
-		push(stk_a, stk_b, PA, st);
-	else if (ft_strcmp(line, "pb") == 0)
-		push(stk_a, stk_b, PB, st);
-	else if (ft_strcmp(line, "ra") == 0)
-		rotate(stk_a, stk_b, RA, st);
-	else if (ft_strcmp(line, "rb") == 0)
-		rotate(stk_a, stk_b, RB, st);
-	else if (ft_strcmp(line, "rr") == 0)
-		rotate(stk_a, stk_b, RR, st);
-	else if (ft_strcmp(line, "rra") == 0)
-		reverse_rotate(stk_a, stk_b, RRA, st);
-	else if (ft_strcmp(line, "rrb") == 0)
-		reverse_rotate(stk_a, stk_b, RRB, st);
-	else if (ft_strcmp(line, "rrr") == 0)
-		reverse_rotate(stk_a, stk_b, RRR, st);
-	else
-	{
-		st->error = true;
-		return (false);
-	}
+	free(line);
+	write(STDERR_FILENO, "Error\n", 6);
 	return (true);
 }
 
-static void	execute_cmd(t_stack **stack_a, t_stack **stack_b, \
-t_push *st, char *line)
+static bool	execute_cmd(t_data *data, char *line)
 {
 	if (ft_strcmp(line, "sa") == 0)
-		swap(stack_a, stack_b, SA, st);
+		swap(data, SA);
 	else if (ft_strcmp(line, "sb") == 0)
-		swap(stack_a, stack_b, SB, st);
+		swap(data, SB);
 	else if (ft_strcmp(line, "ss") == 0)
-		swap(stack_a, stack_b, SS, st);
+		swap(data, SS);
+	else if (ft_strcmp(line, "pa") == 0)
+		push(data, PA);
+	else if (ft_strcmp(line, "pb") == 0)
+		push(data, PB);
+	else if (ft_strcmp(line, "ra") == 0)
+		rotate(data, RA);
+	else if (ft_strcmp(line, "rb") == 0)
+		rotate(data, RB);
+	else if (ft_strcmp(line, "rr") == 0)
+		rotate(data, RR);
+	else if (ft_strcmp(line, "rra") == 0)
+		reverse_rotate(data, RRA);
+	else if (ft_strcmp(line, "rrb") == 0)
+		reverse_rotate(data, RRB);
+	else if (ft_strcmp(line, "rrr") == 0)
+		reverse_rotate(data, RRR);
 	else
-		if (!auxiliar(stack_a, stack_b, st, line))
-			st->error = true;
+		return (error(line));
+	return (false);
 }
 
-static void	read_instructions(t_stack **stack_a, \
-t_stack **stack_b, t_push *st)
+static void	validate(t_data *data, bool error)
 {
-	char	*line;
+	write(STDOUT_FILENO, BOLD, 4);
+	if (!error && stack_is_sorted(data->stack_a) && data->size_of_b == 0)
+		write(STDOUT_FILENO, "OK\n", 3);
+	else
+		write(STDOUT_FILENO, "KO\n", 3);
+	write(STDOUT_FILENO, RESET, 4);
+}
+
+void	checker(t_data *data)
+{
 	int		i;
-	char	c;
+	int		buf;
+	char	*line;
+	bool	error;
 
 	i = 0;
 	line = NULL;
-	while (read(0, &c, 1))
+	while ((read(0, &buf, 1)))
 	{
 		if (line == NULL)
 			line = malloc(sizeof(char) * 4);
-		if (c == '\n' || i == 3)
+		if (buf == '\n' || i == 3)
 		{
 			line[i] = '\0';
-			execute_cmd(stack_a, stack_b, st, line);
-			if (st->error)
+			error = execute_cmd(data, line);
+			if (error)
 				break ;
 			i = 0;
-			free(line);
-			line = NULL;
 		}
 		else
-			line[i++] = c;
+			line[i++] = buf;
 	}
 	if (line)
 		free(line);
-}
-
-int	main(int ac, char **av)
-{
-	t_stack	*stack_a;
-	t_stack	*stack_b;
-	t_push	st;
-
-	if (ac < 2)
-		return (0);
-	stack_a = NULL;
-	stack_b = NULL;
-	st = (t_push){0};
-	st.checker = true;
-	init_stack(&stack_a, ac, av, &st);
-	if (!st.error)
-		read_instructions(&stack_a, &stack_b, &st);
-	if (!st.error)
-	{
-		if (ft_lstsorted(stack_a) && !st.size_of_b)
-			write(1, "OK\n", 3);
-		else
-			write(1, "KO\n", 3);
-	}
-	ft_clean(&stack_a, &stack_b, &st);
-	return (st.error);
+	validate(data, error);
 }
