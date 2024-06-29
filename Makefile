@@ -37,6 +37,7 @@ bonus: $(CHECKER)
 
 $(NAME): EXEC_NAME = $(NAME)
 
+
 $(CHECKER): EXEC_NAME = $(CHECKER)
 
 $(CHECKER) $(NAME): $(OBJS)
