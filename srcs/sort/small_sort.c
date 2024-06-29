@@ -18,11 +18,13 @@ void	sort_three(t_data *data)
 	int	middle;
 	int	last;
 
+	if (stack_is_sorted(data->stack_a) == true)
+		return ;
+	if (data->size_of_a == 2)
+		return (swap(data, SA));
 	first = data->stack_a->value;
 	middle = data->stack_a->next->value;
 	last = data->stack_a->next->next->value;
-	if (data->size_of_a == 2)
-		return (swap(data, SA));
 	if ((first > middle && middle > last) || \
 		(middle > last && last > first) || \
 		(last > first && first > middle))
@@ -37,9 +39,7 @@ void	sort_three(t_data *data)
 
 void	sort_four(t_data *data)
 {
-	if (stack_is_sorted(data->stack_a) == true)
-		return ;
-	if (data->size_of_a <= 3)
+	if (stack_is_sorted(data->stack_a) == true || data->size_of_a < 4)
 		return (sort_three(data));
 	if (smallest_value(data->stack_a) == stack_last(data->stack_a)->value)
 		reverse_rotate(data, RRA);
@@ -47,10 +47,11 @@ void	sort_four(t_data *data)
 		swap(data, SA);
 	if (data->stack_a->value != smallest_value(data->stack_a))
 	{
-		if (data->stack_a->next->value == (smallest_value(data->stack_a) + 1))
+		if (data->stack_a->next->value == \
+		(second_smallest_value(data->stack_a)))
 			swap(data, SA);
 		else if (stack_last(data->stack_a)->value == \
-			(smallest_value(data->stack_a) + 1))
+			(second_smallest_value(data->stack_a)))
 			reverse_rotate(data, RRA);
 	}
 	if (stack_is_sorted(data->stack_a) == true)
@@ -60,4 +61,26 @@ void	sort_four(t_data *data)
 	push(data, PA);
 	if (stack_is_sorted(data->stack_a) == false)
 		swap(data, SA);
+}
+
+void	sort_five(t_data *data)
+{
+	int	smallest;
+
+	if (stack_is_sorted(data->stack_a) == true || data->size_of_a < 5)
+		return (sort_four(data));
+	smallest = smallest_value(data->stack_a);
+	if (distance_to_top(data->stack_a, smallest) <= data->size_of_a / 2)
+	{
+		while (data->stack_a->value != smallest)
+			rotate(data, RA);
+	}
+	else
+	{
+		while (data->stack_a->value != smallest)
+			reverse_rotate(data, RRA);
+	}
+	push(data, PB);
+	sort_four(data);
+	push(data, PA);
 }

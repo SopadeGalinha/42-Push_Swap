@@ -42,6 +42,29 @@ int	smallest_value(t_stack *stack)
 	return (smallest);
 }
 
+int	second_smallest_value(t_stack *stack)
+{
+	t_stack			*tmp;
+	int				smallest;
+	int				second_smallest;
+
+	tmp = stack;
+	smallest = tmp->value;
+	second_smallest = INT_MAX;
+	while (tmp)
+	{
+		if (tmp->value < smallest)
+		{
+			second_smallest = smallest;
+			smallest = tmp->value;
+		}
+		else if (tmp->value < second_smallest && tmp->value != smallest)
+			second_smallest = tmp->value;
+		tmp = tmp->next;
+	}
+	return (second_smallest);
+}
+
 int	biggest_value(t_stack *stack)
 {
 	t_stack			*tmp;

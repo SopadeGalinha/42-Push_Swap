@@ -12,7 +12,7 @@
 
 #include "../../includes/push_swap.h"
 
-static int	distance_to_top(t_stack *stack, int reference)
+int	distance_to_top(t_stack *stack, int reference)
 {
 	int	distance;
 
@@ -52,7 +52,7 @@ static void	update_moves(int *moves, int *temp_moves)
 		moves[i] = temp_moves[i];
 }
 
-static void	calculate_moves(t_data *data, int *moves)
+static void	calculate_moves_a(t_data *data, int *moves)
 {
 	int		i;
 	int		distance[2];
@@ -111,6 +111,6 @@ static void	calculate_moves_b(t_data *data, int *moves)
 void	set_moves(t_data *data, int *moves, bool fistPart)
 {
 	if (fistPart)
-		return (calculate_moves(data, moves));
+		return (calculate_moves_a(data, moves));
 	return (calculate_moves_b(data, moves));
 }

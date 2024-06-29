@@ -17,9 +17,6 @@ static void	assign_target(t_stack *this, t_stack *stack, bool is_stack_a)
 	t_stack	*other;
 
 	other = stack;
-	this->target = INT_MAX;
-	if (is_stack_a)
-		this->target = INT_MIN;
 	while (other != NULL)
 	{
 		if (is_stack_a)
@@ -42,18 +39,20 @@ static void	assign_target(t_stack *this, t_stack *stack, bool is_stack_a)
 
 void	set_targets(t_data *data)
 {
-	t_stack	*temporary;
+	t_stack	*this;
 
-	temporary = data->stack_a;
-	while (temporary != NULL)
+	this = data->stack_a;
+	while (this != NULL)
 	{
-		assign_target(temporary, data->stack_b, true);
-		temporary = temporary->next;
+		this->target = INT_MIN;
+		assign_target(this, data->stack_b, true);
+		this = this->next;
 	}
-	temporary = data->stack_b;
-	while (temporary != NULL)
+	this = data->stack_b;
+	while (this != NULL)
 	{
-		assign_target(temporary, data->stack_a, false);
-		temporary = temporary->next;
+		this->target = INT_MAX;
+		assign_target(this, data->stack_a, false);
+		this = this->next;
 	}
 }

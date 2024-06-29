@@ -37,31 +37,34 @@ static void	reset_moves(int *moves)
 		moves[i] = INITIAL_VALUE;
 }
 
+static void	process_moves(t_data *data, int *moves, int is_a)
+{
+	int	operation;
+
+	operation = PA;
+	if (is_a)
+		operation = PB;
+	reset_moves(moves);
+	set_targets(data);
+	set_moves(data, moves, is_a);
+	execute_moves(data, moves);
+	push(data, operation);
+}
+
 void	sort(t_data *data)
 {
 	int	moves[6];
 
-	if (stack_is_sorted(data->stack_a) == true || data->size_of_a <= 4)
-		return (sort_four(data));
+	if (stack_is_sorted(data->stack_a) == true || data->size_of_a <= 5)
+		return (sort_five(data));
 	push(data, PB);
 	push(data, PB);
-	while (data->size_of_a > 4)
-	{
-		reset_moves(moves);
-		set_targets(data);
-		set_moves(data, moves, true);
-		execute_moves(data, moves);
-		push(data, PB);
-	}
-	sort_four(data);
+	while (data->size_of_a > 5)
+		process_moves(data, moves, true);
+	sort_five(data);
 	while (data->size_of_b > 0)
-	{
-		reset_moves(moves);
-		set_targets(data);
-		set_moves(data, moves, false);
-		execute_moves(data, moves);
-		push(data, PA);
-	}
+		process_moves(data, moves, false);
 	while (stack_is_sorted(data->stack_a) == false)
 		reverse_rotate(data, RRA);
+	print_stack(data);
 }

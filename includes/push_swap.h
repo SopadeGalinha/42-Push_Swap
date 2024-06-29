@@ -24,7 +24,7 @@
 #  define BONUS 0
 # endif
 # define DEBUG 0
-# define INITIAL_VALUE 5
+# define INITIAL_VALUE 55555
 
 // Constants
 # define VALUE 1
@@ -132,13 +132,11 @@ void	sort(t_data *data);
 void	sort_three(t_data *data);
 
 /**
- * @brief Sorts a stack with 4 elements
+ * @brief Sorts a stack with 5 elements
  * 
  * @param data The data structure
- * @note example: 4 3 2 1 = RRA, PB, 3 elements sort, PA, SA
- * @result 1 2 3 4 
 */
-void	sort_four(t_data *data);
+void	sort_five(t_data *data);
 
 /**
  * Sets the target value for both stacks.
@@ -159,6 +157,15 @@ void	sort_four(t_data *data);
  */
 void	set_targets(t_data *data);
 
+int	distance_to_top(t_stack *stack, int reference);
+
+/**
+ * Sets the moves to be executed.
+ * 
+ * @param data The data structure.
+ * @param moves The array of moves.
+ * @param fistPart If true, the moves are calculated for the first part of the sort. 
+*/
 void	set_moves(t_data *data, int *moves, bool fistPart);
 
 // ------------> Operations <------------
@@ -278,6 +285,14 @@ bool	stack_is_sorted(t_stack *stack);
  * @return The smallest value of the stack.
  */
 int		smallest_value(t_stack *stack);
+
+/**
+ * Returns the second smallest value of the stack.
+ *
+ * @param stack: The stack.
+ * @return The second smallest value of the stack.
+ */
+int	second_smallest_value(t_stack *stack);
 
 /**
  * Returns the biggest value of the stack.
