@@ -31,6 +31,8 @@ static bool	initialization(t_data *data, int argc, char ***argv)
 
 	index = -1;
 	error = false;
+	if (ft_strcmp(*argv[0], "./checker") == 0)
+		data->checker = true;
 	if (argc == 2)
 		*argv = split((*argv)[1], ' ');
 	else
@@ -46,20 +48,18 @@ static bool	initialization(t_data *data, int argc, char ***argv)
 	return (error);
 }
 
-#include <stdio.h>
 int	main(int argc, char **argv)
 {
 	bool	error;
 	t_data	data;
 
-	printf("BONUS: %d\n", BONUS);
 	data = (t_data){0};
 	if (argc < 2)
 		return (0);
 	error = initialization(&data, argc, &argv);
 	if (error == false && data.size_of_a > 1)
 	{
-		if (BONUS)
+		if (data.checker)
 			checker(&data);
 		else
 			sort(&data);

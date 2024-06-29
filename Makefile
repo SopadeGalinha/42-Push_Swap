@@ -33,15 +33,14 @@ NUM_SRCS    = $(words $(SRCS))
 # Default target
 all: $(NAME)
 
-# Bonus target
 bonus: $(CHECKER)
 
-# Rule to build the executables
-$(NAME): $(OBJS)
-	@$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+$(NAME): EXEC_NAME = $(NAME)
 
-$(CHECKER): $(OBJS)
-	@$(CC) $(FLAGS) -D BONUS=1 $(OBJS) -o $(CHECKER)
+$(CHECKER): EXEC_NAME = $(CHECKER)
+
+$(CHECKER) $(NAME): $(OBJS)
+	@$(CC) $(FLAGS) $(OBJS) -o $(EXEC_NAME)
 
 # Rule to compile each source file into an object file
 # Also prints a progress bar

@@ -20,10 +20,6 @@
 # include <limits.h>
 
 // Macros
-# ifndef BONUS
-#  define BONUS 0
-# endif
-
 # define DEBUG 0
 # define INITIAL_VALUE 55555
 
@@ -32,6 +28,7 @@
 # define TARGET 0
 
 // Colors
+# define BOLD "\033[1m"
 # define BOLD_GREEN "\033[1;32m"
 # define BOLD_RED "\033[1;31m"
 # define BOLD_BLUE "\033[1;34m"
@@ -70,6 +67,7 @@ typedef struct s_data
 {
 	t_stack		*stack_a;
 	t_stack		*stack_b;
+	bool		checker;
 	int			size_of_a;
 	int			size_of_b;
 }	t_data;
@@ -289,7 +287,7 @@ int		second_smallest_value(t_stack *stack);
  */
 int		biggest_value(t_stack *stack);
 
-// ---------------------> Bonus <--------------------------
+// ---------------------> data->checker <--------------------------
 
 /**
 * @brief This function reads the commands from the 

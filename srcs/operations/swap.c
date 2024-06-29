@@ -36,7 +36,7 @@ void	swap(t_data *data, int move)
 		swap_operation(&data->stack_a);
 	if (move == SB || move == SS)
 		swap_operation(&data->stack_b);
-	if (DEBUG || BONUS)
+	if (DEBUG || data->checker)
 		return ;
 	if (move == SA)
 		write(STDOUT_FILENO, "sa\n", 3);

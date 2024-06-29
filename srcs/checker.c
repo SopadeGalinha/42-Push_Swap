@@ -10,16 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/push_swap.h"
+#include "../includes/push_swap.h"
 
-static int	error(char *line)
+static bool	error(char *line)
 {
 	free(line);
 	write(STDERR_FILENO, "Error\n", 6);
-	return (EXIT_FAILURE);
+	return (true);
 }
 
-static int	execute_cmd(t_data *data, char *line)
+static bool	execute_cmd(t_data *data, char *line)
 {
 	if (ft_strcmp(line, "sa") == 0)
 		swap(data, SA);
@@ -45,7 +45,17 @@ static int	execute_cmd(t_data *data, char *line)
 		reverse_rotate(data, RRR);
 	else
 		return (error(line));
-	return (EXIT_SUCCESS);
+	return (false);
+}
+
+static void	validate(t_data *data, bool error)
+{
+	write(STDOUT_FILENO, BOLD, 4);
+	if (!error && stack_is_sorted(data->stack_a) && data->size_of_b == 0)
+		write(STDOUT_FILENO, "OK\n", 3);
+	else
+		write(STDOUT_FILENO, "KO\n", 3);
+	write(STDOUT_FILENO, RESET, 4);
 }
 
 void	checker(t_data *data)
@@ -53,6 +63,7 @@ void	checker(t_data *data)
 	int		i;
 	int		buf;
 	char	*line;
+	bool	error;
 
 	i = 0;
 	line = NULL;
@@ -63,7 +74,8 @@ void	checker(t_data *data)
 		if (buf == '\n' || i == 3)
 		{
 			line[i] = '\0';
-			if (execute_cmd(data, line) == EXIT_FAILURE)
+			error = execute_cmd(data, line);
+			if (error)
 				break ;
 			i = 0;
 		}
@@ -72,4 +84,5 @@ void	checker(t_data *data)
 	}
 	if (line)
 		free(line);
+	validate(data, error);
 }

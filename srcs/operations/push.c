@@ -40,14 +40,14 @@ void	push(t_data *data, int move)
 	{
 		data->size_of_a++;
 		data->size_of_b--;
-		if (!DEBUG && !BONUS)
+		if (!DEBUG && !data->checker)
 			write(STDOUT_FILENO, "pa\n", 3);
 	}
 	else if (move == PB)
 	{
 		data->size_of_a--;
 		data->size_of_b++;
-		if (!DEBUG && !BONUS)
+		if (!DEBUG && !data->checker)
 			write(STDOUT_FILENO, "pb\n", 3);
 	}
 }
