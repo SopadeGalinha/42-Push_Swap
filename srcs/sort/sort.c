@@ -66,5 +66,4 @@ void	sort(t_data *data)
 		process_moves(data, moves, false);
 	while (stack_is_sorted(data->stack_a) == false)
 		reverse_rotate(data, RRA);
-	print_stack(data);
 }
