@@ -31,8 +31,6 @@ static bool	initialization(t_data *data, int argc, char ***argv)
 
 	index = -1;
 	error = false;
-	if (ft_strcmp(*argv[0], "./checker") == 0)
-		data->checker = true;
 	if (argc == 2)
 		*argv = split((*argv)[1], ' ');
 	else
@@ -41,8 +39,13 @@ static bool	initialization(t_data *data, int argc, char ***argv)
 		return (true);
 	while ((*argv)[++index])
 	{
-		if (push_back(&data->stack_a, ft_atoi((*argv)[index], &error)))
-			return (true);
+		int value = ft_atoi((*argv)[index], &error);
+		
+		if (push_back(&data->stack_a, value))
+		{
+			error = true;
+			break;
+		}
 		data->size_of_a++;
 	}
 	return (error);
