@@ -12,55 +12,53 @@
 
 #include "../includes/push_swap.h"
 
-static int	end_process(t_data *data, int argc, char **argv, bool error)
+static int end_process(t_data *data, int argc, char **argv, bool error)
 {
 	if (argc == 2)
 		free_array(argv);
 	clear(&data->stack_a);
 	clear(&data->stack_b);
-	if (error == false)
+	if (!error)
 		return (EXIT_SUCCESS);
 	write(STDERR_FILENO, "Error\n", 6);
 	return (EXIT_FAILURE);
 }
 
-static bool	initialization(t_data *data, int argc, char ***argv)
+static void initialization(t_data *data, int argc, char ***argv, bool *error)
 {
-	int		index;
-	bool	error;
+	int index;
+	int current_value;
 
-	index = -1;
-	error = false;
+	index = 0;
+	*error = false;
+
 	if (argc == 2)
 		*argv = split((*argv)[1], ' ');
 	else
 		*argv = *argv + 1;
+
 	if (!*argv)
-		return (true);
-	while ((*argv)[++index])
+		*error = true;
+
+	while (*argv && (*argv)[index] && !*error)
 	{
-		int value = ft_atoi((*argv)[index], &error);
-		
-		if (push_back(&data->stack_a, value))
-		{
-			error = true;
-			break;
-		}
+		current_value = ft_atoi((*argv)[index], error);
+		if (*error || push_back(&data->stack_a, current_value))
+			*error = true;
 		data->size_of_a++;
+		index++;
 	}
-	return (error);
 }
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	bool	error;
-	t_data	data;
+	bool error;
+	t_data data = {0};
 
-	data = (t_data){0};
 	if (argc < 2)
 		return (0);
-	error = initialization(&data, argc, &argv);
-	if (error == false && data.size_of_a > 1)
+	initialization(&data, argc, &argv, &error);
+	if (!error && data.size_of_a > 1)
 	{
 		if (data.checker)
 			checker(&data);
